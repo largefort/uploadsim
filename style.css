@@ -1,24 +1,11 @@
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   background-color: #f5f5f5;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-#loadingScreen {
+.loading-screen {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,7 +14,7 @@ body {
   color: #fff;
 }
 
-.terminal {
+.loading-terminal {
   width: 90%;
   max-width: 400px;
   height: 70vh;
@@ -55,40 +42,52 @@ body {
 
 .terminal-content {
   height: calc(100% - 40px);
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #000;
   color: #fff;
   font-family: monospace;
   font-size: 14px;
   line-height: 18px;
-  overflow-y: scroll;
-  scrollbar-width: thin;
+  overflow-y: hidden;
 }
 
-.terminal-content::-webkit-scrollbar {
-  width: 5px;
+.loading-animation {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #ff5f56;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.terminal-content::-webkit-scrollbar-thumb {
-  background-color: #ff5f56;
-  border-radius: 2px;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-#gameScreen {
+.loading-text {
+  margin-top: 10px;
+}
+
+.game-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100vh;
 }
 
-h1 {
+.game-title {
   text-align: center;
   color: #333;
   margin-top: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-#fileUploadList {
+.file-upload-list {
   width: 90%;
   max-width: 400px;
   margin-top: 20px;
@@ -99,55 +98,39 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.fileUploadItem {
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#stats {
+.stats {
   width: 90%;
   max-width: 400px;
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.buttons {
   margin-top: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #ff5f56;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-#fullscreenBtn {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 9999;
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-label {
+  font-size: 16px;
+  color: #333;
+}
+
+.stat-value {
+  font-size: 24px;
+  color: #ff5f56;
+  margin-top: 5px;
+}
+
+.upgrade-button {
+  margin-top: 10px;
+  padding: 10px 20px;
   font-size: 16px;
   color: #fff;
   background-color: #ff5f56;
