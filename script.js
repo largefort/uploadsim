@@ -1,6 +1,8 @@
 // Network Speed and Credit Value Variables
 let networkSpeed = 1;
 let creditValue = 1;
+let networkSpeedPerSecond = 0;
+let creditsPerSecond = 0;
 
 // Button Elements
 const uploadFileBtn = document.getElementById('uploadFileBtn');
@@ -11,6 +13,8 @@ const creditValueUpgradeBtn = document.getElementById('creditValueUpgradeBtn');
 const networkSpeedStat = document.getElementById('networkSpeed');
 const creditValueStat = document.getElementById('creditValue');
 const totalCreditsStat = document.getElementById('totalCredits');
+const networkSpeedPerSecondStat = document.getElementById('networkSpeedPerSecond');
+const creditsPerSecondStat = document.getElementById('creditsPerSecond');
 
 // Upload File Button Click Event
 uploadFileBtn.addEventListener('click', () => {
@@ -26,11 +30,6 @@ uploadFileBtn.addEventListener('click', () => {
   animateProgressBar(progressBar, uploadTime, () => {
     const creditsEarned = fileSize * creditValue;
     incrementTotalCredits(creditsEarned);
-
-    setTimeout(() => {
-      const newFile = createFileElement(getRandomFileSize());
-      document.getElementById('fileUploadList').appendChild(newFile);
-    }, 3000);
   });
 });
 
@@ -62,6 +61,16 @@ function updateNetworkSpeedStat() {
 // Function to update Credit Value Stat
 function updateCreditValueStat() {
   creditValueStat.textContent = creditValue;
+}
+
+// Function to update Network Speed per Second Stat
+function updateNetworkSpeedPerSecondStat() {
+  networkSpeedPerSecondStat.textContent = networkSpeedPerSecond;
+}
+
+// Function to update Credits per Second Stat
+function updateCreditsPerSecondStat() {
+  creditsPerSecondStat.textContent = creditsPerSecond;
 }
 
 // Function to increment Total Credits
@@ -127,6 +136,17 @@ function animateProgressBar(progressBar, duration, callback) {
 function getRandomFileSize() {
   return Math.floor(Math.random() * (100 - 1 + 1) + 1);
 }
+
+// Function to update Network Speed per Second and Credits per Second
+function updateStatsPerSecond() {
+  networkSpeedPerSecond = networkSpeed * 10; // Assuming 10 seconds per upload
+  creditsPerSecond = creditValue * networkSpeedPerSecond;
+  updateNetworkSpeedPerSecondStat();
+  updateCreditsPerSecondStat();
+}
+
+// Update stats every second
+setInterval(updateStatsPerSecond, 1000);
 
 // Initial stat updates
 updateNetworkSpeedStat();
