@@ -61,3 +61,4 @@ document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgra
 
 // Initial stats update
 updateStats();
+
