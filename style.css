@@ -16,8 +16,9 @@ body {
 }
 
 .terminal {
-  width: 400px;
-  height: 400px;
+  width: 90%;
+  max-width: 400px;
+  height: 70vh;
   background-color: #000;
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
@@ -67,6 +68,71 @@ body {
 
 #gameScreen {
   display: none;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  margin: 10px;
+}
+
+#fileUploadList {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fileUploadItem {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.fileUploadItem.fade-out {
+  opacity: 0;
+}
+
+#stats {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #ff5f56;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Rest of the CSS styles... */
