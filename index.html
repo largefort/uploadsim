@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" type="text/css" href="style.css"> href="mobile.css">
 </head>
+
 <body>
+  <h1>File Upload Simulator</h1>
+
   <div id="gameContainer">
-    <h1>File Upload Simulator</h1>
     <div id="statsContainer">
+      <h2>Stats</h2>
       <div class="stat">
-        <span class="stat-label">Network Speed:</span>
-        <span id="networkSpeed" class="stat-value"></span>
+        <span>Network Speed:</span>
+        <span id="networkSpeed">1</span>
       </div>
       <div class="stat">
-        <span class="stat-label">Credit Value:</span>
-        <span id="creditValue" class="stat-value"></span>
+        <span>Credit Value:</span>
+        <span id="creditValue">1</span>
       </div>
       <div class="stat">
-        <span class="stat-label">Total Credits:</span>
-        <span id="totalCredits" class="stat-value"></span>
+        <span>Total Credits:</span>
+        <span id="totalCredits">0</span>
+      </div>
+      <div class="stat">
+        <span>Network Speed per Second:</span>
+        <span id="networkSpeedPerSecond">0</span>
+      </div>
+      <div class="stat">
+        <span>Credits per Second:</span>
+        <span id="creditsPerSecond">0</span>
       </div>
     </div>
+
     <ul id="fileUploadList"></ul>
-    <button id="uploadFileBtn">Upload File <span class="shortcut-label">[Ctrl+U]</span></button>
+
+    <div id="buttonsContainer">
+      <button id="uploadFileBtn">Upload File</button>
+      <button id="networkSpeedUpgradeBtn">Upgrade Network Speed</button>
+      <button id="creditValueUpgradeBtn">Upgrade Credit Value</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
