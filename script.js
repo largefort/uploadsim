@@ -114,12 +114,11 @@ function animateProgressBar(progressBar, duration, callback) {
     if (progress >= 100) {
       clearInterval(intervalId);
       progressBar.parentNode.classList.add('fade-out');
-      setTimeout(() => {
-        progressBar.parentNode.remove();
-        if (typeof callback === 'function') {
-          callback();
-        }
-      }, 500);
+      progressBar.parentNode.parentNode.removeChild(progressBar.parentNode);
+
+      if (typeof callback === 'function') {
+        callback();
+      }
     }
   }, 10);
 }
