@@ -37,6 +37,14 @@ function addFileUploadItem(fileName, fileSize) {
   const creditsEarned = fileSize * creditValue;
   currency += creditsEarned;
   document.getElementById('currency').innerText = currency;
+
+  // Apply fading effect to the file item
+  setTimeout(() => {
+    fileUploadItem.style.opacity = '0';
+    setTimeout(() => {
+      fileUploadItem.remove();
+    }, 1000); // Fade out duration: 1 second
+  }, 3000); // Display duration: 3 seconds
 }
 
 // Function to increase credit value
@@ -51,11 +59,30 @@ function increaseNetworkSpeed() {
   document.getElementById('networkSpeed').innerText = networkSpeed;
 }
 
-// Simulate file uploads every second
-setInterval(() => {
+// Function to upgrade network speed
+function upgradeNetworkSpeed() {
+  if (currency >= 10) {
+    currency -= 10;
+    document.getElementById('currency').innerText = currency;
+    increaseNetworkSpeed();
+  }
+}
+
+// Function to upgrade credit value
+function upgradeCreditValue() {
+  if (currency >= 10) {
+    currency -= 10;
+    document.getElementById('currency').innerText = currency;
+    increaseCreditValue();
+  }
+}
+
+// Simulate file uploads based on network speed
+function simulateFileUploads() {
   const { fileName, fileSize } = generateFileUpload();
   addFileUploadItem(fileName, fileSize);
-}, 1000);
+  setTimeout(simulateFileUploads, 1000 / networkSpeed);
+}
 
 // Increase credit value every 10 seconds
 setInterval(() => {
@@ -66,3 +93,10 @@ setInterval(() => {
 setInterval(() => {
   increaseNetworkSpeed();
 }, 30000);
+
+// Event listeners for upgrade buttons
+document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
+document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
+
+// Start simulating file uploads
+simulateFileUploads();
