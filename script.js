@@ -5,6 +5,29 @@ let networkSpeed = 1;
 let creditValue = 1;
 let totalCredits = 0;
 
+// Function to generate a random file name
+function generateFileName() {
+  const fileNames = [
+    'document',
+    'photo',
+    'video',
+    'music',
+    'report',
+    'presentation',
+    'spreadsheet',
+    'archive',
+    'code',
+    'image',
+  ];
+
+  const extensions = ['.txt', '.doc', '.pdf', '.jpg', '.mp3', '.mp4', '.xlsx', '.zip', '.html', '.png'];
+
+  const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
+  const randomExtension = extensions[Math.floor(Math.random() * extensions.length)];
+
+  return randomName + randomExtension;
+}
+
 // Function to handle file upload
 function uploadFile() {
   // Generate a random file size between 1 KB and 10 MB
@@ -13,10 +36,14 @@ function uploadFile() {
   // Calculate upload time based on network speed
   const uploadTime = fileSize / networkSpeed;
 
+  // Generate a random file name
+  const fileName = generateFileName();
+
   // Create a new file upload item
   const fileUploadItem = document.createElement('div');
   fileUploadItem.classList.add('file-upload-item');
-  fileUploadItem.innerText = `Uploading ${fileSize} KB...`;
+  fileUploadItem.innerText = `Uploading ${fileName} (${fileSize} KB)...`;
+  fileUploadItem.style.animationDuration = `${uploadTime}s`;
 
   // Append the new file upload item to the file upload list
   const fileUploadList = document.getElementById('fileUploadList');
@@ -31,7 +58,10 @@ function uploadFile() {
 
   // Remove the file upload item after the upload time
   setTimeout(() => {
-    fileUploadList.removeChild(fileUploadItem);
+    fileUploadItem.classList.add('fade-out');
+    setTimeout(() => {
+      fileUploadList.removeChild(fileUploadItem);
+    }, 5000); // 5 seconds for fade-out animation
   }, uploadTime * 1000);
 }
 
@@ -61,4 +91,3 @@ document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgra
 
 // Initial stats update
 updateStats();
-
