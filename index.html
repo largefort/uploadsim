@@ -1,41 +1,30 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
 <body>
-  <div class="container">
-    <h1>Idle Upload Simulator</h1>
-    <div class="game-area">
-      <div class="stats">
-        <div class="stats-item">
-          <label>Total Credits</label>
-          <span id="totalCredits">0</span>
-        </div>
-        <div class="stats-item">
-          <label>Network Speed</label>
-          <span id="networkSpeed">1</span>
-        </div>
-        <div class="stats-item">
-          <label>Credit Value</label>
-          <span id="creditValue">1</span>
-        </div>
+  <div id="gameContainer">
+    <h1>File Upload Simulator</h1>
+    <div id="statsContainer">
+      <div class="stat">
+        <span class="stat-label">Network Speed:</span>
+        <span id="networkSpeed" class="stat-value"></span>
       </div>
-      <ul class="file-upload-list" id="fileUploadList">
-      </ul>
-      <div class="buttons">
-        <button id="upgradeNetworkSpeedBtn" class="button">Upgrade Network Speed</button>
-        <button id="upgradeCreditValueBtn" class="button">Upgrade Credit Value</button>
+      <div class="stat">
+        <span class="stat-label">Credit Value:</span>
+        <span id="creditValue" class="stat-value"></span>
       </div>
-      <div class="save-load-buttons">
-        <button id="saveBtn">Save</button>
-        <button id="loadBtn">Load</button>
+      <div class="stat">
+        <span class="stat-label">Total Credits:</span>
+        <span id="totalCredits" class="stat-value"></span>
       </div>
     </div>
+    <ul id="fileUploadList"></ul>
+    <button id="uploadFileBtn">Upload File</button>
   </div>
+
   <script src="script.js"></script>
 </body>
-
 </html>
