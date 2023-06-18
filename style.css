@@ -23,11 +23,29 @@ body {
   width: 90%;
   max-width: 400px;
   margin-top: 20px;
+}
+
+.file-upload-item {
+  width: 100%;
   padding: 10px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  animation: fadeOut 5s ease-in-out;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .stats {
