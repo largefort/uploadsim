@@ -1,59 +1,47 @@
 body {
-  background-color: #f5f5f5;
+  background-color: #222;
+  color: #fff;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
 .game-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 
 .game-title {
-  text-align: center;
-  color: #333;
-  margin-top: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
 .file-upload-list {
-  width: 90%;
   max-width: 400px;
-  margin-top: 20px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #444;
+  border-radius: 5px;
 }
 
 .file-upload-item {
-  width: 100%;
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: #555;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   animation: fadeOut 5s ease-in-out;
 }
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 .stats {
-  width: 90%;
-  max-width: 400px;
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  max-width: 400px;
+  margin: 20px auto;
 }
 
 .stat {
@@ -61,15 +49,14 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: #444;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .stat-label {
   font-size: 16px;
-  color: #333;
+  color: #fff;
 }
 
 .stat-value {
@@ -87,5 +74,39 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
+
+.upgrade-button:hover {
+  background-color: #e0443e;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.action-button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #6c63ff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #574ee1;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
