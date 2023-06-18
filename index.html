@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Idle Upload Simulator</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div id="loadingScreen">
     <div class="terminal">
@@ -23,30 +27,20 @@
   <div id="gameScreen">
     <h1>Idle Upload Simulator</h1>
     <div class="container">
-      <div id="fileUploadList">
-        <!-- Uploaded file list will be populated dynamically -->
-      </div>
+      <div id="fileUploadList"></div>
       <div id="stats">
-        <div class="stat">
-          <p>Virtual Currency:</p>
-          <p id="currency">0</p>
-        </div>
-        <div class="stat">
-          <p>Network Speed:</p>
-          <p id="networkSpeed">1</p>
-        </div>
-        <div class="stat">
-          <p>Credit Value:</p>
-          <p id="creditValue">1</p>
-        </div>
+        <div class="stat">Currency: <span id="currency">0</span></div>
+        <div class="stat">Network Speed: <span id="networkSpeed">1</span></div>
+        <div class="stat">Credit Value: <span id="creditValue">1</span></div>
       </div>
-    </div>
-    <div class="upgrades">
-      <button id="upgradeNetworkSpeedBtn">Upgrade Network Speed (Cost: <span id="networkSpeedUpgradeCost">10</span>)</button>
-      <button id="upgradeCreditValueBtn">Upgrade Credit Value (Cost: <span id="creditValueUpgradeCost">10</span>)</button>
+      <div class="buttons">
+        <button id="upgradeNetworkSpeedBtn">Upgrade Network Speed</button>
+        <button id="upgradeCreditValueBtn">Upgrade Credit Value</button>
+      </div>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
