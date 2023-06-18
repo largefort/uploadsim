@@ -9,6 +9,17 @@ const fileExtensions = {
 // Get the file upload list element
 const fileUploadList = document.getElementById('fileUploadList');
 
+// Get the network speed element
+const networkSpeedElement = document.getElementById('networkSpeed');
+
+// Get the credit value element
+const creditValueElement = document.getElementById('creditValue');
+
+// Initialize network speed and credit value
+let networkSpeed = 1;
+let creditValue = 1;
+let totalCredits = 0;
+
 // Function to generate a random file name with extension
 function generateFileName() {
   const extensions = Object.keys(fileExtensions);
@@ -36,6 +47,12 @@ function createFileUploadItem(fileName) {
   fileUploadList.appendChild(fileUploadItem);
 }
 
+// Function to update network speed and credit value stats
+function updateStats() {
+  networkSpeedElement.textContent = networkSpeed.toFixed(2);
+  creditValueElement.textContent = creditValue.toFixed(2);
+}
+
 // Function to handle file upload
 function uploadFile() {
   const fileName = generateFileName();
@@ -52,7 +69,8 @@ function uploadFile() {
   const fileUploadItem = document.querySelector('.file-upload-item:last-child');
   fileUploadItem.appendChild(progressContainer);
 
-  const uploadTime = Math.floor(Math.random() * 5) + 1;
+  // Calculate upload time based on network speed
+  const uploadTime = Math.floor(Math.random() * 5) + 1 / networkSpeed;
 
   // Set the initial width of the progress bar to 0
   progressBar.style.width = '0';
@@ -72,6 +90,8 @@ function uploadFile() {
       fileUploadItem.classList.add('fade-out');
       setTimeout(() => {
         fileUploadList.removeChild(fileUploadItem);
+        totalCredits += creditValue;
+        updateStats();
         uploadFile(); // Trigger auto-upload
       }, 5000); // 5 seconds for fade-out animation
     }, 500); // 0.5 seconds for progress bar animation
@@ -84,3 +104,6 @@ uploadFileBtn.addEventListener('click', uploadFile);
 
 // Initial auto-upload trigger
 uploadFile();
+
+// Update stats initially
+updateStats();
