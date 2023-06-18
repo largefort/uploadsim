@@ -24,40 +24,12 @@ window.addEventListener('DOMContentLoaded', function() {
     uploadAmount += uploadSpeed;
     if (uploadAmount >= 100) {
       clearInterval(progressInterval);
-      uploadBtn.disabled = false;
       message.textContent = 'Upload completed!';
       credits += 10; // Credits earned per upload completion
       creditsDisplay.textContent = credits;
     }
     progressBar.style.width = uploadAmount + '%';
     progressBar.textContent = uploadAmount + '%';
-  }
-
-  function uploadFiles() {
-    uploadBtn.disabled = true;
-    message.textContent = 'Uploading...';
-    progressBar.style.width = '0';
-    progressBar.textContent = '0%';
-    uploadAmount = 0;
-
-    if (fileCount > 0) {
-      // Generate AI-generated file names
-      var fileNames = generateFileNames(fileCount);
-
-      // Update message with file names
-      message.textContent = 'Uploading: ' + fileNames.join(', ');
-
-      // Calculate upload time based on network speed
-      var uploadTime = 100 / (uploadSpeed * networkSpeed);
-
-      // Simulate upload progress
-      var progressInterval = setInterval(function() {
-        updateProgress();
-      }, uploadTime * 1000);
-    } else {
-      message.textContent = 'No files selected.';
-      uploadBtn.disabled = false;
-    }
   }
 
   function generateFileNames(count) {
@@ -79,6 +51,31 @@ window.addEventListener('DOMContentLoaded', function() {
     var randomExtension = extensions[Math.floor(Math.random() * extensions.length)];
 
     return randomAdjective + ' ' + randomNoun + randomExtension;
+  }
+
+  function uploadFiles() {
+    message.textContent = 'Uploading...';
+    progressBar.style.width = '0';
+    progressBar.textContent = '0%';
+    uploadAmount = 0;
+
+    if (fileCount > 0) {
+      // Generate AI-generated file names
+      var fileNames = generateFileNames(fileCount);
+
+      // Update message with file names
+      message.textContent = 'Uploading: ' + fileNames.join(', ');
+
+      // Calculate upload time based on network speed
+      var uploadTime = 100 / (uploadSpeed * networkSpeed);
+
+      // Simulate upload progress
+      var progressInterval = setInterval(function() {
+        updateProgress();
+      }, uploadTime * 1000);
+    } else {
+      message.textContent = 'No files selected.';
+    }
   }
 
   function upgradeBitcoinDriver() {
@@ -143,7 +140,10 @@ window.addEventListener('DOMContentLoaded', function() {
     }, 1000);
   }
 
-  uploadBtn.addEventListener('click', uploadFiles);
+  uploadBtn.addEventListener('click', function() {
+    fileCount = Math.floor(Math.random() * 5) + 1; // Random number of files (1-5)
+    uploadFiles();
+  });
   bitcoinDriverUpgradeBtn.addEventListener('click', upgradeBitcoinDriver);
   routerSpeedUpgradeBtn.addEventListener('click', upgradeRouterSpeed);
   saveBtn.addEventListener('click', saveGameData);
