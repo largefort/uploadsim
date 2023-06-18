@@ -1,102 +1,117 @@
-// Define global variables
+// Variables
 let currency = 0;
 let networkSpeed = 1;
 let creditValue = 1;
+let networkSpeedUpgradeCost = 10;
+let creditValueUpgradeCost = 10;
 
-// Function to generate a random file name
-function generateFileName() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let fileName = '';
-  for (let i = 0; i < 10; i++) {
-    fileName += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return fileName;
-}
-
-// Function to generate a random file size
-function generateFileSize() {
-  return Math.floor(Math.random() * 1000) + 1; // Generate a random number between 1 and 1000
-}
-
-// Function to generate a random file upload
+// Generate a random file upload
 function generateFileUpload() {
-  const fileName = generateFileName();
-  const fileSize = generateFileSize();
+  const fileName = generateRandomString();
+  const fileSize = Math.floor(Math.random() * 100) + 1; // Random file size between 1 and 100
   return { fileName, fileSize };
 }
 
-// Function to add a file upload item to the list
+// Add a file upload item to the list
 function addFileUploadItem(fileName, fileSize) {
   const fileUploadList = document.getElementById('fileUploadList');
   const fileUploadItem = document.createElement('div');
   fileUploadItem.className = 'fileUploadItem';
-  fileUploadItem.innerText = `${fileName} (${fileSize} KB) uploaded`;
+  fileUploadItem.innerHTML = `<p><strong>${fileName}</strong></p><p>${fileSize} MB</p>`;
   fileUploadList.appendChild(fileUploadItem);
 
-  // Update currency and credit value
-  const creditsEarned = fileSize * creditValue;
-  currency += creditsEarned;
-  document.getElementById('currency').innerText = currency;
-
-  // Apply fading effect to the file item
+  // Automatically remove the file upload item after 3 seconds
   setTimeout(() => {
-    fileUploadItem.style.opacity = '0';
+    fileUploadItem.classList.add('fade-out');
     setTimeout(() => {
-      fileUploadItem.remove();
-    }, 1000); // Fade out duration: 1 second
-  }, 5000); // Display duration: 5 seconds
+      fileUploadList.removeChild(fileUploadItem);
+    }, 1000);
+  }, 3000);
 }
 
-// Function to increase credit value
-function increaseCreditValue() {
-  creditValue++;
-  document.getElementById('creditValue').innerText = creditValue;
+// Update the currency value on the page
+function updateCurrencyValue() {
+  const currencyElement = document.getElementById('currency');
+  currencyElement.textContent = currency;
 }
 
-// Function to increase network speed
-function increaseNetworkSpeed() {
-  networkSpeed++;
-  document.getElementById('networkSpeed').innerText = networkSpeed;
+// Update the network speed value on the page
+function updateNetworkSpeedValue() {
+  const networkSpeedElement = document.getElementById('networkSpeed');
+  networkSpeedElement.textContent = networkSpeed;
 }
 
-// Function to upgrade network speed
+// Update the credit value on the page
+function updateCreditValue() {
+  const creditValueElement = document.getElementById('creditValue');
+  creditValueElement.textContent = creditValue;
+}
+
+// Upgrade the network speed
 function upgradeNetworkSpeed() {
-  if (currency >= 10) {
-    currency -= 10;
-    document.getElementById('currency').innerText = currency;
-    increaseNetworkSpeed();
+  if (currency >= networkSpeedUpgradeCost) {
+    currency -= networkSpeedUpgradeCost;
+    networkSpeed++;
+    networkSpeedUpgradeCost *= 2;
+    updateCurrencyValue();
+    updateNetworkSpeedValue();
+    updateUpgradeCosts();
   }
 }
 
-// Function to upgrade credit value
+// Upgrade the credit value
 function upgradeCreditValue() {
-  if (currency >= 10) {
-    currency -= 10;
-    document.getElementById('currency').innerText = currency;
-    increaseCreditValue();
+  if (currency >= creditValueUpgradeCost) {
+    currency -= creditValueUpgradeCost;
+    creditValue++;
+    creditValueUpgradeCost *= 2;
+    updateCurrencyValue();
+    updateCreditValue();
+    updateUpgradeCosts();
   }
 }
 
-// Simulate file uploads based on network speed
-function simulateFileUploads() {
-  const { fileName, fileSize } = generateFileUpload();
-  addFileUploadItem(fileName, fileSize);
-  setTimeout(simulateFileUploads, 1000 / networkSpeed);
+// Update the upgrade costs on the page
+function updateUpgradeCosts() {
+  const networkSpeedUpgradeCostElement = document.getElementById('networkSpeedUpgradeCost');
+  networkSpeedUpgradeCostElement.textContent = networkSpeedUpgradeCost;
+
+  const creditValueUpgradeCostElement = document.getElementById('creditValueUpgradeCost');
+  creditValueUpgradeCostElement.textContent = creditValueUpgradeCost;
+
+  const upgradeNetworkSpeedBtn = document.getElementById('upgradeNetworkSpeedBtn');
+  upgradeNetworkSpeedBtn.disabled = currency < networkSpeedUpgradeCost;
+
+  const upgradeCreditValueBtn = document.getElementById('upgradeCreditValueBtn');
+  upgradeCreditValueBtn.disabled = currency < creditValueUpgradeCost;
 }
 
-// Increase credit value every 10 seconds
-setInterval(() => {
-  increaseCreditValue();
-}, 10000);
+// Generate a random string for file names
+function generateRandomString() {
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+  return randomString;
+}
 
-// Increase network speed every 30 seconds
-setInterval(() => {
-  increaseNetworkSpeed();
-}, 30000);
+// Start the game
+function startGame() {
+  const upgradeNetworkSpeedBtn = document.getElementById('upgradeNetworkSpeedBtn');
+  upgradeNetworkSpeedBtn.addEventListener('click', upgradeNetworkSpeed);
 
-// Event listeners for upgrade buttons
-document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
-document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
+  const upgradeCreditValueBtn = document.getElementById('upgradeCreditValueBtn');
+  upgradeCreditValueBtn.addEventListener('click', upgradeCreditValue);
 
-// Start simulating file uploads
-simulateFileUploads();
+  setInterval(() => {
+    const fileUpload = generateFileUpload();
+    addFileUploadItem(fileUpload.fileName, fileUpload.fileSize);
+    currency += networkSpeed * creditValue;
+    updateCurrencyValue();
+  }, 2000);
+}
+
+// Initialize the game
+startGame();
