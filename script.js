@@ -1,30 +1,22 @@
-// Variables
+// Game variables
+let totalCredits = 0;
 let networkSpeed = 1;
 let creditValue = 1;
-let totalCredits = 0;
 let isUploading = false;
 
-// Function to generate a random file name
+// Generate a random file name
 function generateFileName() {
-  const fileNames = [
-    'document',
-    'photo',
-    'video',
-    'music',
-    'report',
-    'presentation',
-    'spreadsheet',
-    'archive',
-    'code',
-    'image',
-  ];
-
-  const extensions = ['.txt', '.doc', '.pdf', '.jpg', '.mp3', '.mp4', '.xlsx', '.zip', '.html', '.png'];
-
-  const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
+  const extensions = ['txt', 'jpg', 'png', 'pdf', 'doc'];
   const randomExtension = extensions[Math.floor(Math.random() * extensions.length)];
+  const randomName = Math.random().toString(36).substring(2, 7);
+  return `${randomName}.${randomExtension}`;
+}
 
-  return randomName + randomExtension;
+// Update the game stats
+function updateStats() {
+  document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
+  document.getElementById('creditValue').textContent = `$${creditValue}`;
+  document.getElementById('totalCredits').textContent = totalCredits;
 }
 
 // Function to handle file upload
@@ -34,7 +26,7 @@ function uploadFile() {
   isUploading = true;
 
   // Generate a random file size between 1 KB and 10 MB
-  const fileSize = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
+  let fileSize = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 
   // Calculate upload time based on network speed
   const uploadTime = fileSize / networkSpeed;
@@ -61,6 +53,8 @@ function uploadFile() {
 
   // Remove the file upload item after the upload time
   setTimeout(() => {
+    fileSize += Math.floor(Math.random() * (100 - 10 + 1) + 10); // Increase file size
+    fileUploadItem.innerText = `Uploaded ${fileName} (${fileSize} KB)`;
     fileUploadItem.classList.add('fade-out');
     setTimeout(() => {
       fileUploadList.removeChild(fileUploadItem);
@@ -69,55 +63,49 @@ function uploadFile() {
   }, uploadTime * 1000);
 }
 
-// Function to upgrade the network speed
+// Upgrade network speed
 function upgradeNetworkSpeed() {
-  networkSpeed *= 2;
-  updateStats();
+  const upgradeCost = networkSpeed * 10;
+  if (totalCredits >= upgradeCost) {
+    totalCredits -= upgradeCost;
+    networkSpeed++;
+    updateStats();
+  }
 }
 
-// Function to upgrade the credit value
+// Upgrade credit value
 function upgradeCreditValue() {
-  creditValue += 1;
-  updateStats();
+  const upgradeCost = creditValue * 10;
+  if (totalCredits >= upgradeCost) {
+    totalCredits -= upgradeCost;
+    creditValue++;
+    updateStats();
+  }
 }
 
-// Function to update the stats
-function updateStats() {
-  document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
-  document.getElementById('creditValue').textContent = `$${creditValue}`;
-  document.getElementById('totalCredits').textContent = totalCredits;
-}
-
-// Function to save the game state
+// Save game progress
 function saveGame() {
-  const gameData = {
-    networkSpeed,
-    creditValue,
+  const saveData = {
     totalCredits,
+    networkSpeed,
+    creditValue
   };
-
-  localStorage.setItem('idleUploadSave', JSON.stringify(gameData));
+  localStorage.setItem('idleUploadSave', JSON.stringify(saveData));
   alert('Game saved!');
 }
 
-// Function to load the saved game state
+// Load game progress
 function loadGame() {
-  const savedData = localStorage.getItem('idleUploadSave');
-  if (savedData) {
-    const gameData = JSON.parse(savedData);
-    networkSpeed = gameData.networkSpeed;
-    creditValue = gameData.creditValue;
-    totalCredits = gameData.totalCredits;
+  const saveData = JSON.parse(localStorage.getItem('idleUploadSave'));
+  if (saveData) {
+    totalCredits = saveData.totalCredits || 0;
+    networkSpeed = saveData.networkSpeed || 1;
+    creditValue = saveData.creditValue || 1;
     updateStats();
     alert('Game loaded!');
   } else {
     alert('No saved game found!');
   }
-}
-
-// Function to automatically upload files
-function autoUploadFiles() {
-  setInterval(uploadFile, 5000); // Upload a file every 5 seconds
 }
 
 // Event listeners
@@ -126,7 +114,3 @@ document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgr
 document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
 document.getElementById('saveBtn').addEventListener('click', saveGame);
 document.getElementById('loadBtn').addEventListener('click', loadGame);
-window.addEventListener('load', autoUploadFiles);
-
-// Initial stats update
-updateStats();
