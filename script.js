@@ -5,6 +5,34 @@ let creditValue = 1;
 let networkSpeedUpgradeCost = 10;
 let creditValueUpgradeCost = 10;
 
+// Autosave
+function saveGame() {
+  const saveData = {
+    currency,
+    networkSpeed,
+    creditValue,
+    networkSpeedUpgradeCost,
+    creditValueUpgradeCost
+  };
+  localStorage.setItem('idleUploadSave', JSON.stringify(saveData));
+}
+
+function loadGame() {
+  const saveData = localStorage.getItem('idleUploadSave');
+  if (saveData) {
+    const data = JSON.parse(saveData);
+    currency = data.currency;
+    networkSpeed = data.networkSpeed;
+    creditValue = data.creditValue;
+    networkSpeedUpgradeCost = data.networkSpeedUpgradeCost;
+    creditValueUpgradeCost = data.creditValueUpgradeCost;
+    updateCurrencyValue();
+    updateNetworkSpeedValue();
+    updateCreditValue();
+    updateUpgradeCosts();
+  }
+}
+
 // Generate a random file upload
 function generateFileUpload() {
   const fileName = generateRandomString();
@@ -19,35 +47,41 @@ function addFileUploadItem(fileName, fileSize) {
   fileUploadItem.className = 'fileUploadItem';
   fileUploadItem.innerHTML = `<p><strong>${fileName}</strong></p><p>${fileSize} MB</p>`;
   fileUploadList.appendChild(fileUploadItem);
-
-  // Automatically remove the file upload item after 3 seconds
   setTimeout(() => {
     fileUploadItem.classList.add('fade-out');
     setTimeout(() => {
-      fileUploadList.removeChild(fileUploadItem);
+      fileUploadItem.remove();
     }, 1000);
   }, 3000);
 }
 
-// Update the currency value on the page
+// Update currency value
 function updateCurrencyValue() {
   const currencyElement = document.getElementById('currency');
-  currencyElement.textContent = currency;
+  currencyElement.textContent = currency.toFixed(2);
 }
 
-// Update the network speed value on the page
+// Update network speed value
 function updateNetworkSpeedValue() {
   const networkSpeedElement = document.getElementById('networkSpeed');
   networkSpeedElement.textContent = networkSpeed;
 }
 
-// Update the credit value on the page
+// Update credit value
 function updateCreditValue() {
   const creditValueElement = document.getElementById('creditValue');
   creditValueElement.textContent = creditValue;
 }
 
-// Upgrade the network speed
+// Update upgrade costs
+function updateUpgradeCosts() {
+  const upgradeNetworkSpeedBtn = document.getElementById('upgradeNetworkSpeedBtn');
+  const upgradeCreditValueBtn = document.getElementById('upgradeCreditValueBtn');
+  upgradeNetworkSpeedBtn.textContent = `Upgrade Network Speed (${networkSpeedUpgradeCost})`;
+  upgradeCreditValueBtn.textContent = `Upgrade Credit Value (${creditValueUpgradeCost})`;
+}
+
+// Upgrade network speed
 function upgradeNetworkSpeed() {
   if (currency >= networkSpeedUpgradeCost) {
     currency -= networkSpeedUpgradeCost;
@@ -56,10 +90,11 @@ function upgradeNetworkSpeed() {
     updateCurrencyValue();
     updateNetworkSpeedValue();
     updateUpgradeCosts();
+    saveGame();
   }
 }
 
-// Upgrade the credit value
+// Upgrade credit value
 function upgradeCreditValue() {
   if (currency >= creditValueUpgradeCost) {
     currency -= creditValueUpgradeCost;
@@ -68,60 +103,25 @@ function upgradeCreditValue() {
     updateCurrencyValue();
     updateCreditValue();
     updateUpgradeCosts();
+    saveGame();
   }
 }
 
-// Update the upgrade costs on the page
-function updateUpgradeCosts() {
-  const networkSpeedUpgradeCostElement = document.getElementById('networkSpeedUpgradeCost');
-  networkSpeedUpgradeCostElement.textContent = networkSpeedUpgradeCost;
-
-  const creditValueUpgradeCostElement = document.getElementById('creditValueUpgradeCost');
-  creditValueUpgradeCostElement.textContent = creditValueUpgradeCost;
-
-  const upgradeNetworkSpeedBtn = document.getElementById('upgradeNetworkSpeedBtn');
-  upgradeNetworkSpeedBtn.disabled = currency < networkSpeedUpgradeCost;
-
-  const upgradeCreditValueBtn = document.getElementById('upgradeCreditValueBtn');
-  upgradeCreditValueBtn.disabled = currency < creditValueUpgradeCost;
-}
-
-// Generate a random string for file names
+// Generate a random string
 function generateRandomString() {
-  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let randomString = '';
-  for (let i = 0; i < 10; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomString += characters.charAt(randomIndex);
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < 8; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
-  return randomString;
+  return result;
 }
 
-// Simulate loading process with virtual terminal
-function simulateLoading() {
-  const terminalOutput = document.getElementById('terminalOutput');
-  const loadingPhrases = ['Loading', 'Initializing', 'Preparing', 'Configuring', 'Optimizing'];
-  let currentPhraseIndex = 0;
+// Autosave every 10 seconds
+setInterval(saveGame, 10000);
 
-  function printNextPhrase() {
-    terminalOutput.textContent += loadingPhrases[currentPhraseIndex];
-    currentPhraseIndex++;
-    if (currentPhraseIndex < loadingPhrases.length) {
-      terminalOutput.textContent += '... ';
-      setTimeout(printNextPhrase, 1000);
-    } else {
-      // Loading complete, show the game screen
-      setTimeout(() => {
-        const loadingScreen = document.getElementById('loadingScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        loadingScreen.style.display = 'none';
-        gameScreen.style.display = 'block';
-      }, 1000);
-    }
-  }
-
-  printNextPhrase();
-}
+// Load the game
+loadGame();
 
 // Start the game
 function startGame() {
@@ -139,6 +139,21 @@ function startGame() {
     currency += networkSpeed * creditValue;
     updateCurrencyValue();
   }, 2000);
+}
+
+// Toggle fullscreen
+function toggleFullscreen() {
+  const doc = window.document;
+  const docEl = doc.documentElement;
+
+  const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  const exitFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  } else {
+    exitFullScreen.call(doc);
+  }
 }
 
 // Initialize the game
