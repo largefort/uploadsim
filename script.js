@@ -63,6 +63,13 @@ function uploadFile() {
       // Automatically upload a new file after 3 seconds
       setTimeout(uploadFile, 3000);
     }, 5000); // 5 seconds for fade-out animation
+
+    // Generate a new file after the upload is complete
+    setTimeout(() => {
+      if (!isUploading) {
+        uploadFile();
+      }
+    }, 3000);
   }, uploadTime * 1000);
 }
 
