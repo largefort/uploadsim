@@ -1,7 +1,7 @@
 // JavaScript code
 
 window.addEventListener('DOMContentLoaded', function() {
-  var uploadBtn = document.getElementById('upload-btn');
+  var addFilesBtn = document.getElementById('add-files-btn');
   var message = document.getElementById('message');
   var progressBar = document.getElementById('progress');
   var creditsDisplay = document.getElementById('credits');
@@ -10,8 +10,8 @@ window.addEventListener('DOMContentLoaded', function() {
   var routerSpeedUpgradeBtn = document.getElementById('router-speed-upgrade');
   var saveBtn = document.getElementById('save-btn');
   var loadBtn = document.getElementById('load-btn');
+  var fileInput = document.getElementById('file-input');
   var uploadAmount = 0;
-  var fileCount = 0;
   var uploadSpeed = 1; // Mbps
   var networkSpeed = 1; // Mbps
   var credits = 0;
@@ -53,15 +53,15 @@ window.addEventListener('DOMContentLoaded', function() {
     return randomAdjective + ' ' + randomNoun + randomExtension;
   }
 
-  function uploadFiles() {
+  function uploadFiles(fileList) {
     message.textContent = 'Uploading...';
     progressBar.style.width = '0';
     progressBar.textContent = '0%';
     uploadAmount = 0;
 
-    if (fileCount > 0) {
+    if (fileList.length > 0) {
       // Generate AI-generated file names
-      var fileNames = generateFileNames(fileCount);
+      var fileNames = generateFileNames(fileList.length);
 
       // Update message with file names
       message.textContent = 'Uploading: ' + fileNames.join(', ');
@@ -140,10 +140,15 @@ window.addEventListener('DOMContentLoaded', function() {
     }, 1000);
   }
 
-  uploadBtn.addEventListener('click', function() {
-    fileCount = Math.floor(Math.random() * 5) + 1; // Random number of files (1-5)
-    uploadFiles();
+  addFilesBtn.addEventListener('click', function() {
+    fileInput.click();
   });
+
+  fileInput.addEventListener('change', function(event) {
+    var fileList = event.target.files;
+    uploadFiles(fileList);
+  });
+
   bitcoinDriverUpgradeBtn.addEventListener('click', upgradeBitcoinDriver);
   routerSpeedUpgradeBtn.addEventListener('click', upgradeRouterSpeed);
   saveBtn.addEventListener('click', saveGameData);
