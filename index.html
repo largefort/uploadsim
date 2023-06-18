@@ -9,34 +9,36 @@
 </head>
 
 <body>
-  <div class="container">
-    <div id="loadingScreen">
-      <div class="terminal">
-        <div class="terminal-header">
-          <div class="terminal-button"></div>
-          <div class="terminal-button"></div>
-          <div class="terminal-button"></div>
-        </div>
-        <div class="terminal-content">
-          <!-- Terminal content -->
-        </div>
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-terminal">
+      <div class="terminal-header">
+        <div class="terminal-button"></div>
+        <div class="terminal-button"></div>
+        <div class="terminal-button"></div>
       </div>
-    </div>
-
-    <div id="gameScreen">
-      <h1>Idle Upload Simulator</h1>
-      <div id="fileUploadList"></div>
-      <div id="stats">
-        <!-- Stats content -->
-      </div>
-      <div class="buttons">
-        <button id="upgradeNetworkSpeedBtn">Upgrade Network Speed</button>
-        <button id="upgradeCreditValueBtn">Upgrade Credit Value</button>
+      <div class="terminal-content">
+        <div class="loading-animation"></div>
+        <div class="loading-text">Loading...</div>
       </div>
     </div>
   </div>
 
-  <button id="fullscreenBtn">Toggle Fullscreen</button>
+  <div id="gameScreen" class="game-screen">
+    <h1 class="game-title">Idle Upload Simulator</h1>
+    <div id="fileUploadList" class="file-upload-list"></div>
+    <div id="stats" class="stats">
+      <div class="stat">
+        <div class="stat-label">Network Speed</div>
+        <div id="networkSpeed" class="stat-value">1 KB/s</div>
+        <button id="upgradeNetworkSpeedBtn" class="upgrade-button">Upgrade</button>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Credit Value</div>
+        <div id="creditValue" class="stat-value">$1</div>
+        <button id="upgradeCreditValueBtn" class="upgrade-button">Upgrade</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
