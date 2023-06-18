@@ -23,6 +23,7 @@ body {
   height: 100vh;
   background-color: #222;
   color: #fff;
+  flex-direction: column;
 }
 
 .terminal {
