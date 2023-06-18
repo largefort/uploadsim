@@ -97,6 +97,32 @@ function generateRandomString() {
   return randomString;
 }
 
+// Simulate loading process with virtual terminal
+function simulateLoading() {
+  const terminalOutput = document.getElementById('terminalOutput');
+  const loadingPhrases = ['Loading', 'Initializing', 'Preparing', 'Configuring', 'Optimizing'];
+  let currentPhraseIndex = 0;
+
+  function printNextPhrase() {
+    terminalOutput.textContent += loadingPhrases[currentPhraseIndex];
+    currentPhraseIndex++;
+    if (currentPhraseIndex < loadingPhrases.length) {
+      terminalOutput.textContent += '... ';
+      setTimeout(printNextPhrase, 1000);
+    } else {
+      // Loading complete, show the game screen
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        loadingScreen.style.display = 'none';
+        gameScreen.style.display = 'block';
+      }, 1000);
+    }
+  }
+
+  printNextPhrase();
+}
+
 // Start the game
 function startGame() {
   const upgradeNetworkSpeedBtn = document.getElementById('upgradeNetworkSpeedBtn');
@@ -104,6 +130,8 @@ function startGame() {
 
   const upgradeCreditValueBtn = document.getElementById('upgradeCreditValueBtn');
   upgradeCreditValueBtn.addEventListener('click', upgradeCreditValue);
+
+  simulateLoading(); // Start the loading process
 
   setInterval(() => {
     const fileUpload = generateFileUpload();
