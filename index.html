@@ -1,29 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Idle Upload Simulator</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-  <div id="gameScreen" class="game-screen">
-    <h1 class="game-title">Idle Upload Simulator</h1>
+  <div class="container">
+    <h1 class="title">Idle Upload Simulator</h1>
+
+    <!-- Tutorial screen -->
+    <div id="tutorialScreen" class="tutorial-screen">
+      <h2>Welcome to Idle Upload Simulator!</h2>
+      <p>In this game, your goal is to upload as many files as possible and earn credits.</p>
+      <p>Click the "Upload File" button to start uploading files. Each file has a random size and upload time.</p>
+      <p>Upgrade your network speed and credit value to earn more credits per upload.</p>
+      <p>Use the Save and Load buttons to save and load your game progress.</p>
+      <button id="closeTutorialBtn" class="action-button">Start Playing</button>
+    </div>
+
+    <!-- File Upload List -->
     <div id="fileUploadList" class="file-upload-list"></div>
-    <div id="stats" class="stats">
+
+    <!-- Stats -->
+    <div class="stats">
       <div class="stat">
-        <div class="stat-label">Network Speed</div>
-        <div id="networkSpeed" class="stat-value">1 KB/s</div>
+        <h3>Network Speed</h3>
+        <p id="networkSpeed">1 KB/s</p>
         <button id="upgradeNetworkSpeedBtn" class="upgrade-button">Upgrade</button>
       </div>
       <div class="stat">
-        <div class="stat-label">Credit Value</div>
-        <div id="creditValue" class="stat-value">$1</div>
+        <h3>Credit Value</h3>
+        <p id="creditValue">$1</p>
         <button id="upgradeCreditValueBtn" class="upgrade-button">Upgrade</button>
       </div>
+      <div class="stat">
+        <h3>Total Credits</h3>
+        <p id="totalCredits">0</p>
+      </div>
     </div>
+
+    <!-- Buttons -->
     <div class="buttons">
       <button id="uploadBtn" class="action-button">Upload File</button>
       <button id="saveBtn" class="action-button">Save</button>
