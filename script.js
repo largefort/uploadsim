@@ -1,22 +1,9 @@
-// Game variables
-let totalCredits = 0;
-let networkSpeed = 1;
-let creditValue = 1;
-let isUploading = false;
-
 // Generate a random file name
 function generateFileName() {
   const extensions = ['txt', 'jpg', 'png', 'pdf', 'doc'];
   const randomExtension = extensions[Math.floor(Math.random() * extensions.length)];
   const randomName = Math.random().toString(36).substring(2, 7);
   return `${randomName}.${randomExtension}`;
-}
-
-// Update the game stats
-function updateStats() {
-  document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
-  document.getElementById('creditValue').textContent = `$${creditValue}`;
-  document.getElementById('totalCredits').textContent = totalCredits;
 }
 
 // Function to handle file upload
@@ -59,58 +46,9 @@ function uploadFile() {
     setTimeout(() => {
       fileUploadList.removeChild(fileUploadItem);
       isUploading = false;
+
+      // Add a new file upload after a delay
+      setTimeout(uploadFile, 3000); // 3 seconds delay for the new file upload
     }, 5000); // 5 seconds for fade-out animation
   }, uploadTime * 1000);
 }
-
-// Upgrade network speed
-function upgradeNetworkSpeed() {
-  const upgradeCost = networkSpeed * 10;
-  if (totalCredits >= upgradeCost) {
-    totalCredits -= upgradeCost;
-    networkSpeed++;
-    updateStats();
-  }
-}
-
-// Upgrade credit value
-function upgradeCreditValue() {
-  const upgradeCost = creditValue * 10;
-  if (totalCredits >= upgradeCost) {
-    totalCredits -= upgradeCost;
-    creditValue++;
-    updateStats();
-  }
-}
-
-// Save game progress
-function saveGame() {
-  const saveData = {
-    totalCredits,
-    networkSpeed,
-    creditValue
-  };
-  localStorage.setItem('idleUploadSave', JSON.stringify(saveData));
-  alert('Game saved!');
-}
-
-// Load game progress
-function loadGame() {
-  const saveData = JSON.parse(localStorage.getItem('idleUploadSave'));
-  if (saveData) {
-    totalCredits = saveData.totalCredits || 0;
-    networkSpeed = saveData.networkSpeed || 1;
-    creditValue = saveData.creditValue || 1;
-    updateStats();
-    alert('Game loaded!');
-  } else {
-    alert('No saved game found!');
-  }
-}
-
-// Event listeners
-document.getElementById('uploadBtn').addEventListener('click', uploadFile);
-document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
-document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
-document.getElementById('saveBtn').addEventListener('click', saveGame);
-document.getElementById('loadBtn').addEventListener('click', loadGame);
