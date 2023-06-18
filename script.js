@@ -1,3 +1,8 @@
+// Define global variables
+let currency = 0;
+let networkSpeed = 1;
+let creditValue = 1;
+
 // Function to generate a random file name
 function generateFileName() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -27,10 +32,37 @@ function addFileUploadItem(fileName, fileSize) {
   fileUploadItem.className = 'fileUploadItem';
   fileUploadItem.innerText = `${fileName} (${fileSize} KB) uploaded`;
   fileUploadList.appendChild(fileUploadItem);
+
+  // Update currency and credit value
+  const creditsEarned = fileSize * creditValue;
+  currency += creditsEarned;
+  document.getElementById('currency').innerText = currency;
 }
 
-// Simulate file uploads every 3 seconds
+// Function to increase credit value
+function increaseCreditValue() {
+  creditValue++;
+  document.getElementById('creditValue').innerText = creditValue;
+}
+
+// Function to increase network speed
+function increaseNetworkSpeed() {
+  networkSpeed++;
+  document.getElementById('networkSpeed').innerText = networkSpeed;
+}
+
+// Simulate file uploads every second
 setInterval(() => {
   const { fileName, fileSize } = generateFileUpload();
   addFileUploadItem(fileName, fileSize);
-}, 3000);
+}, 1000);
+
+// Increase credit value every 10 seconds
+setInterval(() => {
+  increaseCreditValue();
+}, 10000);
+
+// Increase network speed every 30 seconds
+setInterval(() => {
+  increaseNetworkSpeed();
+}, 30000);
