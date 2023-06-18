@@ -4,6 +4,7 @@
 let networkSpeed = 1;
 let creditValue = 1;
 let totalCredits = 0;
+let isUploading = false;
 
 // Function to generate a random file name
 function generateFileName() {
@@ -30,6 +31,10 @@ function generateFileName() {
 
 // Function to handle file upload
 function uploadFile() {
+  if (isUploading) return;
+
+  isUploading = true;
+
   // Generate a random file size between 1 KB and 10 MB
   const fileSize = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
 
@@ -61,6 +66,7 @@ function uploadFile() {
     fileUploadItem.classList.add('fade-out');
     setTimeout(() => {
       fileUploadList.removeChild(fileUploadItem);
+      isUploading = false;
     }, 5000); // 5 seconds for fade-out animation
   }, uploadTime * 1000);
 }
