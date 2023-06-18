@@ -2,7 +2,7 @@
 let totalCredits = 0;
 let networkSpeed = 1;
 let creditValue = 1;
-let isUploading = true;
+let isUploading = false;
 
 // Generate a random file name
 function generateFileName() {
@@ -63,14 +63,16 @@ function uploadFile() {
       // Automatically upload a new file after 3 seconds
       setTimeout(uploadFile, 3000);
     }, 5000); // 5 seconds for fade-out animation
-
-    // Generate a new file after the upload is complete
-    setTimeout(() => {
-      if (!isUploading) {
-        uploadFile();
-      }
-    }, 3000);
   }, uploadTime * 1000);
+}
+
+// Auto file uploading system
+function autoUploadFiles() {
+  setInterval(() => {
+    if (!isUploading) {
+      uploadFile();
+    }
+  }, 3000);
 }
 
 // Upgrade network speed
@@ -124,3 +126,6 @@ document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgr
 document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
 document.getElementById('saveBtn').addEventListener('click', saveGame);
 document.getElementById('loadBtn').addEventListener('click', loadGame);
+
+// Start the auto file uploading system
+autoUploadFiles();
