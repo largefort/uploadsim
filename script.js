@@ -60,19 +60,18 @@ function uploadFile() {
       fileUploadList.removeChild(fileUploadItem);
       isUploading = false;
 
-      // Automatically upload a new file after 3 seconds
-      setTimeout(uploadFile, 3000);
+      // Automatically upload a new file after a random delay between 1 and 5 seconds
+      const autoUploadDelay = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
+      setTimeout(uploadFile, autoUploadDelay);
     }, 5000); // 5 seconds for fade-out animation
   }, uploadTime * 1000);
 }
 
 // Auto file uploading system
 function autoUploadFiles() {
-  setInterval(() => {
-    if (!isUploading) {
-      uploadFile();
-    }
-  }, 3000);
+  // Automatically upload a new file after a random delay between 1 and 5 seconds
+  const autoUploadDelay = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
+  setTimeout(uploadFile, autoUploadDelay);
 }
 
 // Upgrade network speed
@@ -95,7 +94,7 @@ function upgradeCreditValue() {
   }
 }
 
-// Save game progress
+// Save game
 function saveGame() {
   const saveData = {
     totalCredits,
@@ -106,7 +105,7 @@ function saveGame() {
   alert('Game saved!');
 }
 
-// Load game progress
+// Load game
 function loadGame() {
   const saveData = JSON.parse(localStorage.getItem('idleUploadSave'));
   if (saveData) {
@@ -121,7 +120,6 @@ function loadGame() {
 }
 
 // Event listeners
-document.getElementById('uploadBtn').addEventListener('click', uploadFile);
 document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
 document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
 document.getElementById('saveBtn').addEventListener('click', saveGame);
