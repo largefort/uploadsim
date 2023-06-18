@@ -2,7 +2,7 @@
 let totalCredits = 0;
 let networkSpeed = 1;
 let creditValue = 1;
-let isUploading = false;
+let isUploading = true;
 
 // Generate a random file name
 function generateFileName() {
