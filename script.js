@@ -1,5 +1,3 @@
-// JavaScript code
-
 // Variables
 let networkSpeed = 1;
 let creditValue = 1;
@@ -117,13 +115,18 @@ function loadGame() {
   }
 }
 
+// Function to automatically upload files
+function autoUploadFiles() {
+  setInterval(uploadFile, 5000); // Upload a file every 5 seconds
+}
+
 // Event listeners
 document.getElementById('uploadBtn').addEventListener('click', uploadFile);
 document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
 document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
 document.getElementById('saveBtn').addEventListener('click', saveGame);
 document.getElementById('loadBtn').addEventListener('click', loadGame);
+window.addEventListener('load', autoUploadFiles);
 
 // Initial stats update
 updateStats();
-
