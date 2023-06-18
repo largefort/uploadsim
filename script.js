@@ -1,129 +1,86 @@
-// Game variables
-let totalCredits = 0;
-let networkSpeed = 1;
-let creditValue = 1;
-let isUploading = false;
+// Define file extensions and their corresponding icons
+const fileExtensions = {
+  doc: 'word',
+  pdf: 'pdf',
+  png: 'image',
+  txt: 'text',
+};
 
-// Generate a random file name
+// Get the file upload list element
+const fileUploadList = document.getElementById('fileUploadList');
+
+// Function to generate a random file name with extension
 function generateFileName() {
-  const extensions = ['txt', 'jpg', 'png', 'pdf', 'doc'];
+  const extensions = Object.keys(fileExtensions);
   const randomExtension = extensions[Math.floor(Math.random() * extensions.length)];
-  const randomName = Math.random().toString(36).substring(2, 7);
+  const randomName = Math.random().toString(36).substring(7);
   return `${randomName}.${randomExtension}`;
 }
 
-// Update the game stats
-function updateStats() {
-  document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
-  document.getElementById('creditValue').textContent = `$${creditValue}`;
-  document.getElementById('totalCredits').textContent = totalCredits;
+// Function to create a file upload item
+function createFileUploadItem(fileName) {
+  const fileUploadItem = document.createElement('li');
+  fileUploadItem.classList.add('file-upload-item');
+
+  const fileIcon = document.createElement('span');
+  fileIcon.classList.add('file-icon');
+  const extension = fileName.split('.').pop();
+  const iconName = fileExtensions[extension] || 'unknown';
+  fileIcon.innerHTML = `<i class="fa fa-file-${iconName}-o"></i>`;
+
+  const fileNameSpan = document.createElement('span');
+  fileNameSpan.textContent = fileName;
+
+  fileUploadItem.appendChild(fileIcon);
+  fileUploadItem.appendChild(fileNameSpan);
+  fileUploadList.appendChild(fileUploadItem);
 }
 
 // Function to handle file upload
 function uploadFile() {
-  if (isUploading) return;
-
-  isUploading = true;
-
-  // Generate a random file size between 1 KB and 10 MB
-  let fileSize = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
-
-  // Calculate upload time based on network speed
-  const uploadTime = fileSize / networkSpeed;
-
-  // Generate a random file name
   const fileName = generateFileName();
+  createFileUploadItem(fileName);
 
-  // Create a new file upload item
-  const fileUploadItem = document.createElement('div');
-  fileUploadItem.classList.add('file-upload-item');
-  fileUploadItem.innerText = `Uploading ${fileName} (${fileSize} KB)...`;
-  fileUploadItem.style.animationDuration = `${uploadTime}s`;
+  // Get the progress bar element
+  const progressBar = document.createElement('div');
+  progressBar.classList.add('progress-bar');
 
-  // Append the new file upload item to the file upload list
-  const fileUploadList = document.getElementById('fileUploadList');
-  fileUploadList.appendChild(fileUploadItem);
+  const progressContainer = document.createElement('div');
+  progressContainer.classList.add('progress-bar-container');
+  progressContainer.appendChild(progressBar);
 
-  // Update the total credits
-  const creditsEarned = fileSize * creditValue;
-  totalCredits += creditsEarned;
+  const fileUploadItem = document.querySelector('.file-upload-item:last-child');
+  fileUploadItem.appendChild(progressContainer);
 
-  // Update the stats
-  updateStats();
+  const uploadTime = Math.floor(Math.random() * 5) + 1;
 
-  // Remove the file upload item after the upload time
+  // Set the initial width of the progress bar to 0
+  progressBar.style.width = '0';
+
+  // Update the width of the progress bar during the upload process
+  const progressInterval = setInterval(() => {
+    const currentWidth = parseFloat(progressBar.style.width);
+    const targetWidth = (currentWidth + 10) + '%'; // Adjust the increment as needed
+    progressBar.style.width = targetWidth;
+  }, 500); // Adjust the interval as needed
+
+  // Remove the progress bar and stop the update interval after the upload time
   setTimeout(() => {
-    fileSize += Math.floor(Math.random() * (100 - 10 + 1) + 10); // Increase file size
-    fileUploadItem.innerText = `Uploaded ${fileName} (${fileSize} KB)`;
-    fileUploadItem.classList.add('fade-out');
+    clearInterval(progressInterval);
+    progressBar.style.width = '100%';
     setTimeout(() => {
-      fileUploadList.removeChild(fileUploadItem);
-      isUploading = false;
-
-      // Automatically upload a new file after a random delay between 1 and 5 seconds
-      const autoUploadDelay = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
-      setTimeout(uploadFile, autoUploadDelay);
-    }, 5000); // 5 seconds for fade-out animation
+      fileUploadItem.classList.add('fade-out');
+      setTimeout(() => {
+        fileUploadList.removeChild(fileUploadItem);
+        uploadFile(); // Trigger auto-upload
+      }, 5000); // 5 seconds for fade-out animation
+    }, 500); // 0.5 seconds for progress bar animation
   }, uploadTime * 1000);
 }
 
-// Auto file uploading system
-function autoUploadFiles() {
-  // Automatically upload a new file after a random delay between 1 and 5 seconds
-  const autoUploadDelay = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
-  setTimeout(uploadFile, autoUploadDelay);
-}
+// Add event listener for the Upload File button
+const uploadFileBtn = document.getElementById('uploadFileBtn');
+uploadFileBtn.addEventListener('click', uploadFile);
 
-// Upgrade network speed
-function upgradeNetworkSpeed() {
-  const upgradeCost = networkSpeed * 10;
-  if (totalCredits >= upgradeCost) {
-    totalCredits -= upgradeCost;
-    networkSpeed++;
-    updateStats();
-  }
-}
-
-// Upgrade credit value
-function upgradeCreditValue() {
-  const upgradeCost = creditValue * 10;
-  if (totalCredits >= upgradeCost) {
-    totalCredits -= upgradeCost;
-    creditValue++;
-    updateStats();
-  }
-}
-
-// Save game
-function saveGame() {
-  const saveData = {
-    totalCredits,
-    networkSpeed,
-    creditValue
-  };
-  localStorage.setItem('idleUploadSave', JSON.stringify(saveData));
-  alert('Game saved!');
-}
-
-// Load game
-function loadGame() {
-  const saveData = JSON.parse(localStorage.getItem('idleUploadSave'));
-  if (saveData) {
-    totalCredits = saveData.totalCredits || 0;
-    networkSpeed = saveData.networkSpeed || 1;
-    creditValue = saveData.creditValue || 1;
-    updateStats();
-    alert('Game loaded!');
-  } else {
-    alert('No saved game found!');
-  }
-}
-
-// Event listeners
-document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
-document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
-document.getElementById('saveBtn').addEventListener('click', saveGame);
-document.getElementById('loadBtn').addEventListener('click', loadGame);
-
-// Start the auto file uploading system
-autoUploadFiles();
+// Initial auto-upload trigger
+uploadFile();
