@@ -6,15 +6,28 @@
 </head>
 <body>
   <h1>Idle Upload Simulator</h1>
-  <div id="fileUploadList">
-    <!-- Uploaded file list will be populated dynamically -->
+  <div class="container">
+    <div id="fileUploadList">
+      <!-- Uploaded file list will be populated dynamically -->
+    </div>
+    <div id="stats">
+      <div class="stat">
+        <p>Virtual Currency:</p>
+        <p id="currency">0</p>
+      </div>
+      <div class="stat">
+        <p>Network Speed:</p>
+        <p id="networkSpeed">1</p>
+      </div>
+      <div class="stat">
+        <p>Credit Value:</p>
+        <p id="creditValue">1</p>
+      </div>
+    </div>
   </div>
-  <div id="stats">
-    <p>Virtual Currency: <span id="currency">0</span></p>
-    <p>Network Speed: <span id="networkSpeed">1</span> KB/s</p>
-    <p>Credit Value: <span id="creditValue">1</span> credits/file</p>
-    <button id="upgradeNetworkSpeedBtn">Upgrade Network Speed (Cost: 10)</button>
-    <button id="upgradeCreditValueBtn">Upgrade Credit Value (Cost: 10)</button>
+  <div class="upgrades">
+    <button id="upgradeNetworkSpeedBtn">Upgrade Network Speed (Cost: <span id="networkSpeedUpgradeCost">10</span>)</button>
+    <button id="upgradeCreditValueBtn">Upgrade Credit Value (Cost: <span id="creditValueUpgradeCost">10</span>)</button>
   </div>
 
   <script src="script.js"></script>
