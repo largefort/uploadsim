@@ -44,7 +44,7 @@ function addFileUploadItem(fileName, fileSize) {
     setTimeout(() => {
       fileUploadItem.remove();
     }, 1000); // Fade out duration: 1 second
-  }, 3000); // Display duration: 3 seconds
+  }, 5000); // Display duration: 5 seconds
 }
 
 // Function to increase credit value
