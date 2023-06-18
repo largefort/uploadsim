@@ -90,10 +90,40 @@ function updateStats() {
   document.getElementById('totalCredits').textContent = totalCredits;
 }
 
+// Function to save the game state
+function saveGame() {
+  const gameData = {
+    networkSpeed,
+    creditValue,
+    totalCredits,
+  };
+
+  localStorage.setItem('idleUploadSave', JSON.stringify(gameData));
+  alert('Game saved!');
+}
+
+// Function to load the saved game state
+function loadGame() {
+  const savedData = localStorage.getItem('idleUploadSave');
+  if (savedData) {
+    const gameData = JSON.parse(savedData);
+    networkSpeed = gameData.networkSpeed;
+    creditValue = gameData.creditValue;
+    totalCredits = gameData.totalCredits;
+    updateStats();
+    alert('Game loaded!');
+  } else {
+    alert('No saved game found!');
+  }
+}
+
 // Event listeners
 document.getElementById('uploadBtn').addEventListener('click', uploadFile);
 document.getElementById('upgradeNetworkSpeedBtn').addEventListener('click', upgradeNetworkSpeed);
 document.getElementById('upgradeCreditValueBtn').addEventListener('click', upgradeCreditValue);
+document.getElementById('saveBtn').addEventListener('click', saveGame);
+document.getElementById('loadBtn').addEventListener('click', loadGame);
 
 // Initial stats update
 updateStats();
+
