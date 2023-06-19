@@ -17,13 +17,15 @@ h1 {
 }
 
 #statsContainer {
-  background-color: #f5f5f5;
+  background-color: #222;
   padding: 10px;
   margin-bottom: 20px;
+  border-radius: 10px;
 }
 
 .stat {
   margin-bottom: 10px;
+  color: #fff;
 }
 
 .stat span:first-child {
@@ -39,16 +41,19 @@ h1 {
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #f5f5f5;
+  background-color: #222;
   margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .file-icon {
   width: 50px;
   height: 50px;
-  background-color: #ddd;
+  background-color: #555;
   margin-right: 10px;
   background-size: cover;
+  border-radius: 5px;
 }
 
 .file-info {
@@ -57,18 +62,21 @@ h1 {
 
 .file-name {
   font-weight: bold;
+  color: #fff;
 }
 
 .file-status {
   margin-top: 5px;
+  color: #ccc;
 }
 
 .file-progress-bar {
   height: 5px;
-  background-color: #ddd;
+  background-color: #555;
   margin-top: 5px;
   width: 0;
   transition: width 0.5s ease;
+  border-radius: 5px;
 }
 
 #buttonsContainer {
@@ -80,6 +88,16 @@ h1 {
 button {
   padding: 10px 20px;
   margin: 0 10px;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #333;
 }
 
 .fade-out {
