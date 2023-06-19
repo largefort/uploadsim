@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Upload Simulator</title>
 </head>
+
 <body>
+  <div id="loadingScreen">
+    <div class="loading-icon"></div>
+  </div>
+
   <div id="gameContainer">
-    <div id="loadingScreen">
-      <div class="spinner"></div>
-      <h1>Loading...</h1>
-    </div>
-    
-    <div id="fileListContainer">
-      <h2>File List</h2>
-      <ul id="fileList"></ul>
-    </div>
+    <h1>Upload Simulator</h1>
+
+    <ul id="fileList"></ul>
 
     <div id="buttonsContainer">
       <button id="uploadButton">Upload File</button>
-      <button id="saveButton">Save</button>
-      <button id="loadButton">Load</button>
+      <button id="saveButton">Save Game</button>
+      <button id="loadButton">Load Game</button>
       <button id="upgradeButton">Upgrade Network Speed</button>
       <button id="creditsUpgradeButton">Upgrade Credit Value</button>
     </div>
@@ -26,19 +29,20 @@
     <div id="statsContainer">
       <div class="stat">
         <span class="stat-label">Network Speed:</span>
-        <span id="networkSpeedStat" class="stat-value">0 kb/s</span>
+        <span id="networkSpeedStat" class="stat-value"></span>
       </div>
       <div class="stat">
         <span class="stat-label">Credit Value:</span>
-        <span id="creditValueStat" class="stat-value">1</span>
+        <span id="creditValueStat" class="stat-value"></span>
       </div>
       <div class="stat">
         <span class="stat-label">Total Credits:</span>
-        <span id="totalCreditsStat" class="stat-value">0</span>
+        <span id="totalCreditsStat" class="stat-value"></span>
       </div>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
