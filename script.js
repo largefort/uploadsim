@@ -2,6 +2,9 @@
 const FILE_UPLOAD_DELAY = 3000; // Delay in milliseconds for new file uploads
 const FILE_SIZE_INCREASE = 10; // File size increase in KB
 
+// Network Speed Units
+const networkUnits = ['B/s', 'KB/s', 'MB/s', 'GB/s', 'TB/s'];
+
 // DOM Elements
 const loadingScreen = document.getElementById('loadingScreen');
 const gameContainer = document.getElementById('gameContainer');
@@ -11,11 +14,28 @@ const upgradeNetworkSpeedButton = document.getElementById('upgradeNetworkSpeedBu
 const upgradeCreditValueButton = document.getElementById('upgradeCreditValueButton');
 const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
+const networkSpeedElement = document.getElementById('networkSpeed');
+const creditValueElement = document.getElementById('creditValue');
+const totalCreditsElement = document.getElementById('totalCredits');
 
 // Global Variables
-let networkSpeed = 1; // Network speed in KB/s
+let networkSpeed = 1; // Network speed in bytes per second
+let networkUnitIndex = 0; // Index of the current network speed unit
 let creditValue = 1; // Credit value for each file upload
 let totalCredits = 0; // Total credits earned
+
+// Function to format network speed with units
+function formatNetworkSpeed(speed) {
+  let formattedSpeed = speed;
+  let unitIndex = 0;
+
+  while (formattedSpeed >= 1024 && unitIndex < networkUnits.length - 1) {
+    formattedSpeed /= 1024;
+    unitIndex++;
+  }
+
+  return `${formattedSpeed.toFixed(2)} ${networkUnits[unitIndex]}`;
+}
 
 // Function to generate a random file name with extension
 function generateFileName() {
@@ -77,49 +97,50 @@ function uploadFile(fileElement) {
       // Increase total credits
       const fileSize = FILE_SIZE_INCREASE * creditValue;
       totalCredits += fileSize;
-      document.getElementById('totalCredits').textContent = totalCredits;
+      totalCreditsElement.textContent = totalCredits;
 
+      // Create a new file after a delay
       setTimeout(() => {
-        fileElement.remove();
-
-        // Create a new file after a delay
-        setTimeout(() => {
-          const newFileName = generateFileName();
-          const newFileElement = createFileElement(newFileName);
-          fileUploadList.appendChild(newFileElement);
-          uploadFile(newFileElement);
-        }, FILE_UPLOAD_DELAY);
-      }, 5000); // Wait 5 seconds before removing the file element
+        const newFileName = generateFileName();
+        const newFileElement = createFileElement(newFileName);
+        fileUploadList.appendChild(newFileElement);
+        uploadFile(newFileElement);
+      }, FILE_UPLOAD_DELAY);
     }
 
     updateProgressBar(progressBarElement, progress);
-  }, 1000); // Update progress every second
+  }, 1000);
 }
 
 // Function to handle the click event of the Upload File button
 function handleUploadFile() {
+  uploadFileButton.disabled = true;
+
   const fileName = generateFileName();
   const fileElement = createFileElement(fileName);
   fileUploadList.appendChild(fileElement);
+
   uploadFile(fileElement);
 }
 
 // Function to handle the click event of the Upgrade Network Speed button
 function handleUpgradeNetworkSpeed() {
   networkSpeed *= 10;
-  document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
+  networkUnitIndex = Math.min(networkUnitIndex + 1, networkUnits.length - 1);
+  networkSpeedElement.textContent = formatNetworkSpeed(networkSpeed);
 }
 
 // Function to handle the click event of the Upgrade Credit Value button
 function handleUpgradeCreditValue() {
   creditValue *= 10;
-  document.getElementById('creditValue').textContent = creditValue;
+  creditValueElement.textContent = creditValue;
 }
 
 // Function to handle the click event of the Save button
 function handleSave() {
   const gameData = {
     networkSpeed,
+    networkUnitIndex,
     creditValue,
     totalCredits
   };
@@ -133,16 +154,20 @@ function handleLoad() {
   if (savedData) {
     const gameData = JSON.parse(savedData);
     networkSpeed = gameData.networkSpeed;
+    networkUnitIndex = gameData.networkUnitIndex;
     creditValue = gameData.creditValue;
     totalCredits = gameData.totalCredits;
-    document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
-    document.getElementById('creditValue').textContent = creditValue;
-    document.getElementById('totalCredits').textContent = totalCredits;
+    networkSpeedElement.textContent = formatNetworkSpeed(networkSpeed);
+    creditValueElement.textContent = creditValue;
+    totalCreditsElement.textContent = totalCredits;
     alert('Game loaded successfully!');
   } else {
     alert('No saved game data found!');
   }
 }
+
+// Initialize the network speed display
+networkSpeedElement.textContent = formatNetworkSpeed(networkSpeed);
 
 // Add event listeners
 uploadFileButton.addEventListener('click', handleUploadFile);
