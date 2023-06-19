@@ -1,82 +1,56 @@
+/* Main game container */
 body {
+  background-color: #0c0c0c;
+  color: #fff;
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
+/* Game container */
 #gameContainer {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-#loadingScreen {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #fff;
 }
 
-.spinner {
-  width: 100px;
-  height: 100px;
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
-  border-radius: 50%;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
+/* Title */
 h1 {
-  color: #333;
-  margin-top: 20px;
-  font-size: 24px;
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
-#fileListContainer {
-  margin-top: 20px;
-}
-
+/* File List */
 #fileList {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  width: 400px;
 }
 
 .file {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   padding: 10px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #444;
 }
 
 .file-icon {
   font-size: 20px;
-  color: #999;
   margin-right: 10px;
 }
 
 .file-info {
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .file-name {
   font-weight: bold;
-  color: #333;
 }
 
 .file-extension {
@@ -84,6 +58,7 @@ h1 {
   color: #666;
 }
 
+/* Buttons Container */
 #buttonsContainer {
   margin-top: 20px;
   text-align: center;
@@ -98,12 +73,15 @@ button {
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #2779bd;
 }
 
+/* Stats Container */
 #statsContainer {
   margin-top: 20px;
 }
@@ -115,12 +93,40 @@ button:hover {
 }
 
 .stat-label {
-  color: #333;
-  font-weight: bold;
+  color: #999;
+  font-size: 14px;
   margin-right: 5px;
 }
 
 .stat-value {
-  color: #666;
+  color: #fff;
+  font-weight: bold;
 }
 
+/* Loading Screen */
+#loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-icon {
+  font-size: 80px;
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
