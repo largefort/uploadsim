@@ -1,118 +1,97 @@
-// Global variables
-let networkSpeed = 0;
-let creditValue = 1;
-let totalCredits = 0;
+// Constants
+const fileExtensions = ['.txt', '.doc', '.pdf', '.jpg', '.png', '.mp3', '.mp4'];
+const fileIcons = ['file-alt', 'file-word', 'file-pdf', 'file-image', 'file-image', 'file-audio', 'file-video'];
+const networkSpeedUpgrades = [10, 50, 100, 500, 1000]; // Speed in KB/s
+const creditValueUpgrades = [10, 50, 100, 500, 1000]; // Value in credits
 
-// DOM elements
+// Variables
+let networkSpeed = 10; // Initial network speed in KB/s
+let creditValue = 1; // Initial credit value
+let totalCredits = 0; // Total earned credits
+
+// Elements
+const fileList = document.getElementById('fileList');
+const networkSpeedStat = document.getElementById('networkSpeedStat');
+const creditValueStat = document.getElementById('creditValueStat');
+const totalCreditsStat = document.getElementById('totalCreditsStat');
 const uploadButton = document.getElementById('uploadButton');
 const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
 const upgradeButton = document.getElementById('upgradeButton');
 const creditsUpgradeButton = document.getElementById('creditsUpgradeButton');
-const networkSpeedStat = document.getElementById('networkSpeedStat');
-const creditValueStat = document.getElementById('creditValueStat');
-const totalCreditsStat = document.getElementById('totalCreditsStat');
-const fileList = document.getElementById('fileList');
 
-// Function to generate a random file name
-function generateRandomFileName() {
-  const fileNames = ['document', 'image', 'video', 'audio', 'data', 'code'];
-  const fileExtensions = ['.txt', '.jpg', '.mp4', '.mp3', '.csv', '.js'];
-  const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
-  const randomExtension = fileExtensions[Math.floor(Math.random() * fileExtensions.length)];
-  return randomName + randomExtension;
-}
-
-// Function to generate an AI file
-function generateAIFile() {
-  const fileName = generateRandomFileName();
-  const fileSize = Math.floor(Math.random() * 100) + 1; // Random file size between 1 and 100 KB
-  return { name: fileName, size: fileSize };
-}
-
-// Function to update the network speed and credit value stats
+// Update stats
 function updateStats() {
-  networkSpeedStat.textContent = `${networkSpeed} kb/s`;
+  networkSpeedStat.textContent = `${networkSpeed} KB/s`;
   creditValueStat.textContent = creditValue;
   totalCreditsStat.textContent = totalCredits;
 }
 
-// Function to simulate file uploading
-function uploadFile() {
-  const file = generateAIFile();
+// Generate a random file name
+function generateFileName() {
+  const fileNameLength = Math.floor(Math.random() * 8) + 4;
+  let fileName = '';
 
-  const fileItem = document.createElement('li');
-  fileItem.classList.add('file');
+  for (let i = 0; i < fileNameLength; i++) {
+    fileName += String.fromCharCode(97 + Math.floor(Math.random() * 26));
+  }
 
-  const fileIcon = document.createElement('span');
-  fileIcon.classList.add('file-icon');
-  fileIcon.innerHTML = '<i class="fa fa-file"></i>';
-
-  const fileInfo = document.createElement('div');
-  fileInfo.classList.add('file-info');
-
-  const fileName = document.createElement('span');
-  fileName.classList.add('file-name');
-  fileName.textContent = file.name;
-
-  const fileExtension = document.createElement('span');
-  fileExtension.classList.add('file-extension');
-  fileExtension.textContent = `Size: ${file.size} KB`;
-
-  fileInfo.appendChild(fileName);
-  fileInfo.appendChild(fileExtension);
-
-  fileItem.appendChild(fileIcon);
-  fileItem.appendChild(fileInfo);
-
-  fileList.appendChild(fileItem);
-
-  // Scroll to the bottom of the file list
-  fileList.scrollTop = fileList.scrollHeight;
-
-  // Update total credits based on file size and credit value
-  const creditsEarned = file.size * creditValue;
-  totalCredits += creditsEarned;
-
-  updateStats();
+  return fileName;
 }
 
-// Event listener for upload button click
+// Generate a random file extension
+function generateFileExtension() {
+  return fileExtensions[Math.floor(Math.random() * fileExtensions.length)];
+}
+
+// Generate a random file
+function generateFile() {
+  const fileName = generateFileName();
+  const fileExtension = generateFileExtension();
+  const fileIcon = fileIcons[fileExtensions.indexOf(fileExtension)];
+
+  return {
+    name: fileName,
+    extension: fileExtension,
+    icon: fileIcon,
+  };
+}
+
+// Upload a file
+function uploadFile() {
+  const file = generateFile();
+
+  const fileElement = document.createElement('li');
+  fileElement.classList.add('file');
+  fileElement.innerHTML = `
+    <div class="file-info">
+      <i class="fas fa-${file.icon} file-icon"></i>
+      <span class="file-name">${file.name}</span>
+      <span class="file-extension">${file.extension}</span>
+    </div>
+    <div class="progress-bar"></div>
+  `;
+
+  fileList.appendChild(fileElement);
+
+  const progressBar = fileElement.querySelector('.progress-bar');
+  const progressAnimation = setInterval(() => {
+    progressBar.style.width = `${Math.random() * 100}%`;
+  }, 200);
+
+  setTimeout(() => {
+    clearInterval(progressAnimation);
+    fileElement.remove();
+    totalCredits += creditValue;
+    updateStats();
+    uploadFile();
+  }, 5000);
+}
+
+// Event listeners
 uploadButton.addEventListener('click', () => {
   uploadFile();
 });
 
-// Event listener for save button click
-saveButton.addEventListener('click', () => {
-  alert('Saving game...');
-});
-
-// Event listener for load button click
-loadButton.addEventListener('click', () => {
-  alert('Loading game...');
-});
-
-// Event listener for network speed upgrade button click
-upgradeButton.addEventListener('click', () => {
-  networkSpeed += 1;
-  updateStats();
-});
-
-// Event listener for credit value upgrade button click
-creditsUpgradeButton.addEventListener('click', () => {
-  creditValue += 1;
-  updateStats();
-});
-
-// Initialize game
-function initializeGame() {
-  updateStats();
-  uploadFile();
-}
-
-// Delay the display of the game content for 3 seconds
-setTimeout(() => {
-  document.getElementById('loadingScreen').style.display = 'none';
-  document.getElementById('gameContainer').style.display = 'block';
-  initializeGame();
-}, 3000);
+updateStats();
+uploadFile();
