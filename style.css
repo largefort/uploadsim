@@ -8,12 +8,17 @@ body {
 
 h1 {
   text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 #gameContainer {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 #statsContainer {
@@ -74,15 +79,8 @@ h1 {
   height: 5px;
   background-color: #555;
   margin-top: 5px;
-  width: 0;
+  width: 100%;
   border-radius: 5px;
-}
-
-.file-progress-bar-inner {
-  height: 100%;
-  background-color: #f00;
-  border-radius: 5px;
-  transition: width 0.5s ease;
 }
 
 #buttonsContainer {
@@ -116,6 +114,55 @@ button:hover {
   }
   100% {
     opacity: 0;
+  }
+}
+
+/* 3D Visual Styles */
+
+#gameContainer {
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+
+.file {
+  transform-style: preserve-3d;
+  animation: fileEntry 1s ease;
+}
+
+@keyframes fileEntry {
+  0% {
+    transform: translateZ(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+.file-icon {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotateY(0);
+  }
+  100% {
+    transform: rotateY(1turn);
+  }
+}
+
+.file-progress-bar {
+  animation: progressBar 1s linear infinite;
+}
+
+@keyframes progressBar {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
   }
 }
 
