@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Simulator</title>
   <link rel="stylesheet" href="style.css">
-  <title>Upload Simulator 3D</title>
 </head>
-
 <body>
+  <div id="loadingScreen">
+    <div class="loadingIcon"></div>
+    <div class="loadingText">Loading...</div>
+  </div>
+
   <div id="gameContainer">
-    <h1>Upload Simulator 3D</h1>
+    <h1>Upload Simulator</h1>
 
     <div id="statsContainer">
       <div class="stat">
         <span>Network Speed:</span>
-        <span id="networkSpeed">0 KB/s</span>
+        <span id="networkSpeed">0 kb/s</span>
       </div>
       <div class="stat">
         <span>Credit Value:</span>
-        <span id="creditValue">1</span>
+        <span id="creditValue">1 credit/kb</span>
       </div>
       <div class="stat">
         <span>Total Credits:</span>
-        <span id="totalCredits">0</span>
+        <span id="totalCredits">0 credits</span>
       </div>
     </div>
 
@@ -40,5 +43,4 @@
 
   <script src="script.js"></script>
 </body>
-
 </html>
