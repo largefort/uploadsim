@@ -1,112 +1,154 @@
-// Global variables
+// Constants
+const NETWORK_SPEED_UPGRADE_COST = 100;
+const CREDIT_VALUE_UPGRADE_COST = 50;
+const FILE_UPLOAD_DELAY = 3000; // 3 seconds
+
+// Variables
 let networkSpeed = 1;
 let creditValue = 1;
 let totalCredits = 0;
-let networkSpeedPerSecond = 0;
-let creditsPerSecond = 0;
 let fileCount = 0;
 
-// Handle file upload
-function handleUploadFile() {
-  const uploadFileBtn = document.getElementById('uploadFileBtn');
-  uploadFileBtn.addEventListener('click', function() {
-    const fileElement = createFileElement();
-    const fileUploadList = document.getElementById('fileUploadList');
-    fileUploadList.appendChild(fileElement);
-    animateProgressBar(fileElement);
+// DOM Elements
+const networkSpeedElement = document.getElementById('networkSpeed');
+const creditValueElement = document.getElementById('creditValue');
+const totalCreditsElement = document.getElementById('totalCredits');
+const fileUploadListElement = document.getElementById('fileUploadList');
+const uploadFileButton = document.getElementById('uploadFileButton');
+const upgradeNetworkSpeedButton = document.getElementById('upgradeNetworkSpeedButton');
+const upgradeCreditValueButton = document.getElementById('upgradeCreditValueButton');
+const saveButton = document.getElementById('saveButton');
+const loadButton = document.getElementById('loadButton');
 
-    // Automatically upload new file in 3 seconds
-    setTimeout(function() {
-      handleUploadFile();
-    }, 3000);
-  });
+// Update network speed element
+function updateNetworkSpeed() {
+  networkSpeedElement.textContent = `${networkSpeed} KB/s`;
+}
+
+// Update credit value element
+function updateCreditValue() {
+  creditValueElement.textContent = creditValue;
+}
+
+// Update total credits element
+function updateTotalCredits() {
+  totalCreditsElement.textContent = totalCredits;
 }
 
 // Create a new file element
-function createFileElement() {
+function createFileElement(fileName, fileSize) {
   const fileElement = document.createElement('li');
-  fileElement.className = 'file';
+  fileElement.classList.add('file');
 
-  const fileIcon = document.createElement('div');
-  fileIcon.className = 'file-icon';
+  const fileIconElement = document.createElement('div');
+  fileIconElement.classList.add('file-icon');
+  fileElement.appendChild(fileIconElement);
 
-  const fileInfo = document.createElement('div');
-  fileInfo.className = 'file-info';
+  const fileInfoElement = document.createElement('div');
+  fileInfoElement.classList.add('file-info');
+  fileElement.appendChild(fileInfoElement);
 
-  const fileName = document.createElement('div');
-  fileName.className = 'file-name';
-  fileName.textContent = `File ${++fileCount}`;
+  const fileNameElement = document.createElement('div');
+  fileNameElement.classList.add('file-name');
+  fileNameElement.textContent = fileName;
+  fileInfoElement.appendChild(fileNameElement);
 
-  const fileStatus = document.createElement('div');
-  fileStatus.className = 'file-status';
-  fileStatus.textContent = 'Uploading...';
+  const fileStatusElement = document.createElement('div');
+  fileStatusElement.classList.add('file-status');
+  fileStatusElement.textContent = 'Uploading';
+  fileInfoElement.appendChild(fileStatusElement);
 
-  const fileProgressBar = document.createElement('div');
-  fileProgressBar.className = 'file-progress-bar';
+  const fileProgressBarElement = document.createElement('div');
+  fileProgressBarElement.classList.add('file-progress-bar');
+  fileInfoElement.appendChild(fileProgressBarElement);
 
-  fileInfo.appendChild(fileName);
-  fileInfo.appendChild(fileStatus);
-  fileInfo.appendChild(fileProgressBar);
+  fileUploadListElement.appendChild(fileElement);
 
-  fileElement.appendChild(fileIcon);
-  fileElement.appendChild(fileInfo);
+  // Animate the progress bar
+  setTimeout(() => {
+    fileProgressBarElement.classList.add('fade-out');
+  }, 5000);
 
-  return fileElement;
+  // Remove the file element after the animation
+  setTimeout(() => {
+    fileElement.remove();
+  }, 6000);
 }
 
-// Animate progress bar
-function animateProgressBar(fileElement) {
-  const fileProgressBar = fileElement.querySelector('.file-progress-bar');
-  const uploadDuration = Math.random() * 3000 + 2000; // Random duration between 2 to 5 seconds
-  fileProgressBar.style.transitionDuration = `${uploadDuration}ms`;
-  fileProgressBar.style.width = '100%';
+// Upload a new file
+function uploadFile() {
+  const fileName = `file_${fileCount}`;
+  const fileSize = Math.floor(Math.random() * 1000) + 1; // Random file size between 1 and 1000
+  const fileCredits = fileSize * creditValue;
 
-  // When upload is complete
-  setTimeout(function() {
-    fileElement.classList.add('fade-out');
+  totalCredits += fileCredits;
+  updateTotalCredits();
 
-    // Remove file element after fade out animation is complete
-    setTimeout(function() {
-      fileElement.remove();
-      totalCredits += creditValue;
-      updateStats();
-    }, 1000);
-  }, uploadDuration);
+  createFileElement(fileName, fileSize);
+
+  fileCount++;
 }
 
 // Upgrade network speed
 function upgradeNetworkSpeed() {
-  networkSpeed += 1;
-  updateStats();
-  displayNetworkSpeed();
+  const upgradeCost = NETWORK_SPEED_UPGRADE_COST * networkSpeed;
+  if (totalCredits >= upgradeCost) {
+    totalCredits -= upgradeCost;
+    networkSpeed++;
+    updateNetworkSpeed();
+    updateTotalCredits();
+  }
 }
 
 // Upgrade credit value
 function upgradeCreditValue() {
-  creditValue += 1;
-  updateStats();
+  const upgradeCost = CREDIT_VALUE_UPGRADE_COST * creditValue;
+  if (totalCredits >= upgradeCost) {
+    totalCredits -= upgradeCost;
+    creditValue++;
+    updateCreditValue();
+    updateTotalCredits();
+  }
 }
 
-// Update stats
-function updateStats() {
-  const networkSpeedElement = document.getElementById('networkSpeed');
-  networkSpeedElement.textContent = networkSpeed;
-
-  const creditValueElement = document.getElementById('creditValue');
-  creditValueElement.textContent = creditValue;
-
-  const totalCreditsElement = document.getElementById('totalCredits');
-  totalCreditsElement.textContent = totalCredits;
-
-  networkSpeedPerSecond = networkSpeed * creditsPerSecond;
-  const networkSpeedPerSecondElement = document.getElementById('networkSpeedPerSecond');
-  networkSpeedPerSecondElement.textContent = networkSpeedPerSecond;
-
-  const creditsPerSecondElement = document.getElementById('creditsPerSecond');
-  creditsPerSecondElement.textContent = creditsPerSecond;
+// Save game progress
+function saveGame() {
+  const gameData = {
+    networkSpeed,
+    creditValue,
+    totalCredits,
+    fileCount,
+  };
+  localStorage.setItem('uploadSimulatorGameData', JSON.stringify(gameData));
+  alert('Game saved!');
 }
 
-// Start the game
-handleUploadFile(); // Automatically start uploading files
-updateStats(); // Initialize stats
-displayNetworkSpeed(); // Initialize network speed display
+// Load game progress
+function loadGame() {
+  const savedGameData = localStorage.getItem('uploadSimulatorGameData');
+  if (savedGameData) {
+    const gameData = JSON.parse(savedGameData);
+    networkSpeed = gameData.networkSpeed;
+    creditValue = gameData.creditValue;
+    totalCredits = gameData.totalCredits;
+    fileCount = gameData.fileCount;
+    updateNetworkSpeed();
+    updateCreditValue();
+    updateTotalCredits();
+    alert('Game loaded!');
+  } else {
+    alert('No saved game found!');
+  }
+}
+
+// Event listeners
+uploadFileButton.addEventListener('click', uploadFile);
+upgradeNetworkSpeedButton.addEventListener('click', upgradeNetworkSpeed);
+upgradeCreditValueButton.addEventListener('click', upgradeCreditValue);
+saveButton.addEventListener('click', saveGame);
+loadButton.addEventListener('click', loadGame);
+
+// Initialize game
+updateNetworkSpeed();
+updateCreditValue();
+updateTotalCredits();
