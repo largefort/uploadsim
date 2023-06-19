@@ -1,105 +1,73 @@
-/* General styles */
-
 body {
   font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
   margin: 0;
   padding: 0;
-}
-
-h1 {
-  text-align: center;
-  color: #fff;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-#loadingScreen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #000;
-  color: #fff;
-}
-
-.loadingText {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.loader {
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 #gameContainer {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #333;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
-#statsContainer {
-  background-color: #222;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 10px;
+#loadingScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #fff;
 }
 
-.stat {
-  margin-bottom: 10px;
-  color: #fff;
+.spinner {
+  width: 100px;
+  height: 100px;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
 }
 
-.stat span:first-child {
-  font-weight: bold;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-#fileUploadList {
+h1 {
+  color: #333;
+  margin-top: 20px;
+  font-size: 24px;
+}
+
+#fileListContainer {
+  margin-top: 20px;
+}
+
+#fileList {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .file {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background-color: #222;
   margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
   border-radius: 5px;
-  animation: fileEntry 1s ease;
-}
-
-@keyframes fileEntry {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .file-icon {
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
+  font-size: 20px;
+  color: #999;
   margin-right: 10px;
-  background-size: cover;
-  border-radius: 50%;
-  animation: spin 3s linear infinite;
 }
 
 .file-info {
@@ -108,67 +76,51 @@ h1 {
 
 .file-name {
   font-weight: bold;
-  color: #fff;
+  color: #333;
 }
 
-.file-status {
-  margin-top: 5px;
-  color: #ccc;
-}
-
-.file-progress-bar {
-  height: 5px;
-  background-color: #555;
-  margin-top: 5px;
-  border-radius: 5px;
+.file-extension {
+  font-size: 12px;
+  color: #666;
 }
 
 #buttonsContainer {
-  display: flex;
-  justify-content: center;
   margin-top: 20px;
+  text-align: center;
 }
 
 button {
   padding: 10px 20px;
-  margin: 0 10px;
-  background-color: #222;
+  font-size: 16px;
+  background-color: #3498db;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-right: 10px;
 }
 
 button:hover {
-  background-color: #333;
+  background-color: #2779bd;
 }
 
-.fade-out {
-  animation: fadeOut 1s forwards;
+#statsContainer {
+  margin-top: 20px;
 }
 
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+.stat {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-/* Mobile styles */
-@media screen and (max-width: 600px) {
-  #gameContainer {
-    padding: 10px;
-  }
-
-  #buttonsContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  button {
-    margin: 10px 0;
-  }
+.stat-label {
+  color: #333;
+  font-weight: bold;
+  margin-right: 5px;
 }
+
+.stat-value {
+  color: #666;
+}
+
