@@ -116,10 +116,40 @@ function handleUpgradeCreditValue() {
   document.getElementById('creditValue').textContent = creditValue;
 }
 
+// Function to handle the click event of the Save button
+function handleSave() {
+  const gameData = {
+    networkSpeed,
+    creditValue,
+    totalCredits
+  };
+  localStorage.setItem('gameData', JSON.stringify(gameData));
+  alert('Game saved successfully!');
+}
+
+// Function to handle the click event of the Load button
+function handleLoad() {
+  const savedData = localStorage.getItem('gameData');
+  if (savedData) {
+    const gameData = JSON.parse(savedData);
+    networkSpeed = gameData.networkSpeed;
+    creditValue = gameData.creditValue;
+    totalCredits = gameData.totalCredits;
+    document.getElementById('networkSpeed').textContent = `${networkSpeed} KB/s`;
+    document.getElementById('creditValue').textContent = creditValue;
+    document.getElementById('totalCredits').textContent = totalCredits;
+    alert('Game loaded successfully!');
+  } else {
+    alert('No saved game data found!');
+  }
+}
+
 // Add event listeners
 uploadFileButton.addEventListener('click', handleUploadFile);
 upgradeNetworkSpeedButton.addEventListener('click', handleUpgradeNetworkSpeed);
 upgradeCreditValueButton.addEventListener('click', handleUpgradeCreditValue);
+saveButton.addEventListener('click', handleSave);
+loadButton.addEventListener('click', handleLoad);
 
 // Hide loading screen after a delay
 setTimeout(() => {
