@@ -1,108 +1,41 @@
-// Constants
-const FILE_UPLOAD_SPEED = 1000; // File upload speed in milliseconds
-const FADE_OUT_DURATION = 5000; // Fade out duration for file elements in milliseconds
-
 // Global variables
 let networkSpeed = 1;
 let creditValue = 1;
 let totalCredits = 0;
 let networkSpeedPerSecond = 0;
 let creditsPerSecond = 0;
-
-// File icons
-const fileIcons = {
-  image: 'image-icon.png',
-  video: 'video-icon.png',
-  audio: 'audio-icon.png',
-  document: 'document-icon.png',
-};
-
-// File extensions
-const fileExtensions = {
-  image: ['.jpg', '.png', '.gif'],
-  video: ['.mp4', '.avi', '.mov'],
-  audio: ['.mp3', '.wav', '.ogg'],
-  document: ['.txt', '.pdf', '.doc'],
-};
-
-// File upload list
-const fileUploadList = document.getElementById('fileUploadList');
-
-// Buttons
-const uploadFileBtn = document.getElementById('uploadFileBtn');
-const networkSpeedUpgradeBtn = document.getElementById('networkSpeedUpgradeBtn');
-const creditValueUpgradeBtn = document.getElementById('creditValueUpgradeBtn');
-
-// Event listeners
-uploadFileBtn.addEventListener('click', handleUploadFile);
-networkSpeedUpgradeBtn.addEventListener('click', upgradeNetworkSpeed);
-creditValueUpgradeBtn.addEventListener('click', upgradeCreditValue);
+let fileCount = 0;
 
 // Handle file upload
 function handleUploadFile() {
-  const file = generateRandomFile();
-  const fileElement = createFileElement(file);
+  const uploadFileBtn = document.getElementById('uploadFileBtn');
+  uploadFileBtn.addEventListener('click', function() {
+    const fileElement = createFileElement();
+    const fileUploadList = document.getElementById('fileUploadList');
+    fileUploadList.appendChild(fileElement);
+    animateProgressBar(fileElement);
 
-  fileUploadList.appendChild(fileElement);
-  animateProgressBar(fileElement);
-
-  const uploadDuration = file.size / networkSpeed;
-  const creditsEarned = file.size * creditValue;
-  totalCredits += creditsEarned;
-
-  setTimeout(() => {
-    fileElement.classList.add('fade-out');
-    setTimeout(() => {
-      fileUploadList.removeChild(fileElement);
-      updateStats();
-      handleUploadFile(); // Automatically upload a new file
-    }, FADE_OUT_DURATION);
-  }, uploadDuration);
+    // Automatically upload new file in 3 seconds
+    setTimeout(function() {
+      handleUploadFile();
+    }, 3000);
+  });
 }
 
-// Generate a random file
-function generateRandomFile() {
-  const fileTypes = Object.keys(fileIcons);
-  const randomType = fileTypes[Math.floor(Math.random() * fileTypes.length)];
-  const randomExtension =
-    fileExtensions[randomType][Math.floor(Math.random() * fileExtensions[randomType].length)];
-  const randomSize = Math.floor(Math.random() * 100) + 1; // Random file size between 1 and 100 KB
-
-  return {
-    name: generateRandomFileName(randomType, randomExtension),
-    type: randomType,
-    extension: randomExtension,
-    size: randomSize,
-  };
-}
-
-// Generate a random file name
-function generateRandomFileName(type, extension) {
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
-  let fileName = '';
-
-  for (let i = 0; i < 5; i++) {
-    fileName += characters[Math.floor(Math.random() * characters.length)];
-  }
-
-  return `${fileName}${extension}`;
-}
-
-// Create a file element
-function createFileElement(file) {
+// Create a new file element
+function createFileElement() {
   const fileElement = document.createElement('li');
   fileElement.className = 'file';
 
   const fileIcon = document.createElement('div');
   fileIcon.className = 'file-icon';
-  fileIcon.style.backgroundImage = `url(${fileIcons[file.type]})`;
 
   const fileInfo = document.createElement('div');
   fileInfo.className = 'file-info';
 
   const fileName = document.createElement('div');
   fileName.className = 'file-name';
-  fileName.textContent = file.name;
+  fileName.textContent = `File ${++fileCount}`;
 
   const fileStatus = document.createElement('div');
   fileStatus.className = 'file-status';
@@ -124,15 +57,28 @@ function createFileElement(file) {
 // Animate progress bar
 function animateProgressBar(fileElement) {
   const fileProgressBar = fileElement.querySelector('.file-progress-bar');
-  const uploadDuration = fileElement.querySelector('.file-info').textContent.size / networkSpeed;
+  const uploadDuration = Math.random() * 3000 + 2000; // Random duration between 2 to 5 seconds
   fileProgressBar.style.transitionDuration = `${uploadDuration}ms`;
   fileProgressBar.style.width = '100%';
+
+  // When upload is complete
+  setTimeout(function() {
+    fileElement.classList.add('fade-out');
+
+    // Remove file element after fade out animation is complete
+    setTimeout(function() {
+      fileElement.remove();
+      totalCredits += creditValue;
+      updateStats();
+    }, 1000);
+  }, uploadDuration);
 }
 
 // Upgrade network speed
 function upgradeNetworkSpeed() {
   networkSpeed += 1;
   updateStats();
+  displayNetworkSpeed();
 }
 
 // Upgrade credit value
@@ -162,3 +108,5 @@ function updateStats() {
 
 // Start the game
 handleUploadFile(); // Automatically start uploading files
+updateStats(); // Initialize stats
+displayNetworkSpeed(); // Initialize network speed display
