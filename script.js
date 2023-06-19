@@ -1,183 +1,118 @@
-// Constants
-const FILE_UPLOAD_DELAY = 3000; // Delay in milliseconds for new file uploads
-const FILE_SIZE_INCREASE = 10; // File size increase in KB
+// Global variables
+let networkSpeed = 0;
+let creditValue = 1;
+let totalCredits = 0;
 
-// Network Speed Units
-const networkUnits = ['B/s', 'KB/s', 'MB/s', 'GB/s', 'TB/s'];
-
-// DOM Elements
-const loadingScreen = document.getElementById('loadingScreen');
-const gameContainer = document.getElementById('gameContainer');
-const fileUploadList = document.getElementById('fileUploadList');
-const uploadFileButton = document.getElementById('uploadFileButton');
-const upgradeNetworkSpeedButton = document.getElementById('upgradeNetworkSpeedButton');
-const upgradeCreditValueButton = document.getElementById('upgradeCreditValueButton');
+// DOM elements
+const uploadButton = document.getElementById('uploadButton');
 const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
-const networkSpeedElement = document.getElementById('networkSpeed');
-const creditValueElement = document.getElementById('creditValue');
-const totalCreditsElement = document.getElementById('totalCredits');
+const upgradeButton = document.getElementById('upgradeButton');
+const creditsUpgradeButton = document.getElementById('creditsUpgradeButton');
+const networkSpeedStat = document.getElementById('networkSpeedStat');
+const creditValueStat = document.getElementById('creditValueStat');
+const totalCreditsStat = document.getElementById('totalCreditsStat');
+const fileList = document.getElementById('fileList');
 
-// Global Variables
-let networkSpeed = 1; // Network speed in bytes per second
-let networkUnitIndex = 0; // Index of the current network speed unit
-let creditValue = 1; // Credit value for each file upload
-let totalCredits = 0; // Total credits earned
-
-// Function to format network speed with units
-function formatNetworkSpeed(speed) {
-  let formattedSpeed = speed;
-  let unitIndex = 0;
-
-  while (formattedSpeed >= 1024 && unitIndex < networkUnits.length - 1) {
-    formattedSpeed /= 1024;
-    unitIndex++;
-  }
-
-  return `${formattedSpeed.toFixed(2)} ${networkUnits[unitIndex]}`;
+// Function to generate a random file name
+function generateRandomFileName() {
+  const fileNames = ['document', 'image', 'video', 'audio', 'data', 'code'];
+  const fileExtensions = ['.txt', '.jpg', '.mp4', '.mp3', '.csv', '.js'];
+  const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
+  const randomExtension = fileExtensions[Math.floor(Math.random() * fileExtensions.length)];
+  return randomName + randomExtension;
 }
 
-// Function to generate a random file name with extension
-function generateFileName() {
-  const extensions = ['.txt', '.doc', '.jpg', '.png', '.mp3', '.mp4'];
-  const randomExtension = extensions[Math.floor(Math.random() * extensions.length)];
-  return 'file' + Date.now() + randomExtension;
+// Function to generate an AI file
+function generateAIFile() {
+  const fileName = generateRandomFileName();
+  const fileSize = Math.floor(Math.random() * 100) + 1; // Random file size between 1 and 100 KB
+  return { name: fileName, size: fileSize };
 }
 
-// Function to create a new file element
-function createFileElement(fileName) {
-  const fileElement = document.createElement('li');
-  fileElement.classList.add('file');
+// Function to update the network speed and credit value stats
+function updateStats() {
+  networkSpeedStat.textContent = `${networkSpeed} kb/s`;
+  creditValueStat.textContent = creditValue;
+  totalCreditsStat.textContent = totalCredits;
+}
 
-  const fileIcon = document.createElement('div');
+// Function to simulate file uploading
+function uploadFile() {
+  const file = generateAIFile();
+
+  const fileItem = document.createElement('li');
+  fileItem.classList.add('file');
+
+  const fileIcon = document.createElement('span');
   fileIcon.classList.add('file-icon');
-  fileElement.appendChild(fileIcon);
+  fileIcon.innerHTML = '<i class="fa fa-file"></i>';
 
   const fileInfo = document.createElement('div');
   fileInfo.classList.add('file-info');
 
-  const fileNameElement = document.createElement('div');
-  fileNameElement.classList.add('file-name');
-  fileNameElement.textContent = fileName;
-  fileInfo.appendChild(fileNameElement);
+  const fileName = document.createElement('span');
+  fileName.classList.add('file-name');
+  fileName.textContent = file.name;
 
-  const fileStatus = document.createElement('div');
-  fileStatus.classList.add('file-status');
-  fileStatus.textContent = 'Uploading';
-  fileInfo.appendChild(fileStatus);
+  const fileExtension = document.createElement('span');
+  fileExtension.classList.add('file-extension');
+  fileExtension.textContent = `Size: ${file.size} KB`;
 
-  const fileProgressBar = document.createElement('div');
-  fileProgressBar.classList.add('file-progress-bar');
-  fileInfo.appendChild(fileProgressBar);
+  fileInfo.appendChild(fileName);
+  fileInfo.appendChild(fileExtension);
 
-  fileElement.appendChild(fileInfo);
+  fileItem.appendChild(fileIcon);
+  fileItem.appendChild(fileInfo);
 
-  return fileElement;
+  fileList.appendChild(fileItem);
+
+  // Scroll to the bottom of the file list
+  fileList.scrollTop = fileList.scrollHeight;
+
+  // Update total credits based on file size and credit value
+  const creditsEarned = file.size * creditValue;
+  totalCredits += creditsEarned;
+
+  updateStats();
 }
 
-// Function to update the file progress bar
-function updateProgressBar(progressBarElement, progressPercentage) {
-  progressBarElement.style.width = `${progressPercentage}%`;
+// Event listener for upload button click
+uploadButton.addEventListener('click', () => {
+  uploadFile();
+});
+
+// Event listener for save button click
+saveButton.addEventListener('click', () => {
+  alert('Saving game...');
+});
+
+// Event listener for load button click
+loadButton.addEventListener('click', () => {
+  alert('Loading game...');
+});
+
+// Event listener for network speed upgrade button click
+upgradeButton.addEventListener('click', () => {
+  networkSpeed += 1;
+  updateStats();
+});
+
+// Event listener for credit value upgrade button click
+creditsUpgradeButton.addEventListener('click', () => {
+  creditValue += 1;
+  updateStats();
+});
+
+// Initialize game
+function initializeGame() {
+  updateStats();
+  uploadFile();
 }
 
-// Function to upload a file
-function uploadFile(fileElement) {
-  const progressBarElement = fileElement.querySelector('.file-progress-bar');
-
-  let progress = 0;
-
-  const progressInterval = setInterval(() => {
-    progress += networkSpeed;
-
-    if (progress >= 100) {
-      clearInterval(progressInterval);
-      fileElement.querySelector('.file-status').textContent = 'Upload Complete';
-      fileElement.classList.add('fade-out');
-
-      // Increase total credits
-      const fileSize = FILE_SIZE_INCREASE * creditValue;
-      totalCredits += fileSize;
-      totalCreditsElement.textContent = totalCredits;
-
-      // Create a new file after a delay
-      setTimeout(() => {
-        const newFileName = generateFileName();
-        const newFileElement = createFileElement(newFileName);
-        fileUploadList.appendChild(newFileElement);
-        uploadFile(newFileElement);
-      }, FILE_UPLOAD_DELAY);
-    }
-
-    updateProgressBar(progressBarElement, progress);
-  }, 1000);
-}
-
-// Function to handle the click event of the Upload File button
-function handleUploadFile() {
-  uploadFileButton.disabled = true;
-
-  const fileName = generateFileName();
-  const fileElement = createFileElement(fileName);
-  fileUploadList.appendChild(fileElement);
-
-  uploadFile(fileElement);
-}
-
-// Function to handle the click event of the Upgrade Network Speed button
-function handleUpgradeNetworkSpeed() {
-  networkSpeed *= 10;
-  networkUnitIndex = Math.min(networkUnitIndex + 1, networkUnits.length - 1);
-  networkSpeedElement.textContent = formatNetworkSpeed(networkSpeed);
-}
-
-// Function to handle the click event of the Upgrade Credit Value button
-function handleUpgradeCreditValue() {
-  creditValue *= 10;
-  creditValueElement.textContent = creditValue;
-}
-
-// Function to handle the click event of the Save button
-function handleSave() {
-  const gameData = {
-    networkSpeed,
-    networkUnitIndex,
-    creditValue,
-    totalCredits
-  };
-  localStorage.setItem('gameData', JSON.stringify(gameData));
-  alert('Game saved successfully!');
-}
-
-// Function to handle the click event of the Load button
-function handleLoad() {
-  const savedData = localStorage.getItem('gameData');
-  if (savedData) {
-    const gameData = JSON.parse(savedData);
-    networkSpeed = gameData.networkSpeed;
-    networkUnitIndex = gameData.networkUnitIndex;
-    creditValue = gameData.creditValue;
-    totalCredits = gameData.totalCredits;
-    networkSpeedElement.textContent = formatNetworkSpeed(networkSpeed);
-    creditValueElement.textContent = creditValue;
-    totalCreditsElement.textContent = totalCredits;
-    alert('Game loaded successfully!');
-  } else {
-    alert('No saved game data found!');
-  }
-}
-
-// Initialize the network speed display
-networkSpeedElement.textContent = formatNetworkSpeed(networkSpeed);
-
-// Add event listeners
-uploadFileButton.addEventListener('click', handleUploadFile);
-upgradeNetworkSpeedButton.addEventListener('click', handleUpgradeNetworkSpeed);
-upgradeCreditValueButton.addEventListener('click', handleUpgradeCreditValue);
-saveButton.addEventListener('click', handleSave);
-loadButton.addEventListener('click', handleLoad);
-
-// Hide loading screen after a delay
+// Delay the display of the game content for 3 seconds
 setTimeout(() => {
-  loadingScreen.style.display = 'none';
-  gameContainer.style.display = 'block';
+  document.getElementById('loadingScreen').style.display = 'none';
+  document.getElementById('gameContainer').style.display = 'block';
+  initializeGame();
 }, 3000);
