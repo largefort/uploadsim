@@ -1,43 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload Simulator</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
   <div id="loadingScreen">
-    <div class="loadingIcon"></div>
     <div class="loadingText">Loading...</div>
+    <div class="loader"></div>
   </div>
-
+  
   <div id="gameContainer">
     <h1>Upload Simulator</h1>
-
+    
     <div id="statsContainer">
       <div class="stat">
-        <span>Network Speed:</span>
-        <span id="networkSpeed">0 kb/s</span>
+        Network Speed: <span id="networkSpeed">0 KB/s</span>
       </div>
       <div class="stat">
-        <span>Credit Value:</span>
-        <span id="creditValue">1 credit/kb</span>
+        Credit Value: <span id="creditValue">1</span>
       </div>
       <div class="stat">
-        <span>Total Credits:</span>
-        <span id="totalCredits">0 credits</span>
+        Total Credits: <span id="totalCredits">0</span>
       </div>
     </div>
-
+    
     <ul id="fileUploadList"></ul>
-
+    
     <div id="buttonsContainer">
       <button id="uploadFileButton">Upload File</button>
       <button id="upgradeNetworkSpeedButton">Upgrade Network Speed</button>
       <button id="upgradeCreditValueButton">Upgrade Credit Value</button>
-      <button id="saveButton">Save</button>
-      <button id="loadButton">Load</button>
+      <button id="saveButton">Save Game</button>
+      <button id="loadButton">Load Game</button>
     </div>
   </div>
 
