@@ -1,136 +1,26 @@
-/* General styles */
-
 body {
+  text-align: center;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #333;
 }
 
 h1 {
-  text-align: center;
-  color: #fff;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  color: #333;
 }
 
-#gameContainer {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #222;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+#upload-container {
+  margin-top: 50px;
 }
 
-#statsContainer {
-  background-color: #222;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-}
-
-.stat {
-  margin-bottom: 10px;
-  color: #fff;
-}
-
-.stat span:first-child {
-  font-weight: bold;
-}
-
-#fileUploadList {
-  list-style-type: none;
-  padding: 0;
-}
-
-.file {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background-color: #222;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-.file-icon {
-  width: 50px;
-  height: 50px;
-  background-color: #555;
-  margin-right: 10px;
-  background-size: cover;
-  border-radius: 5px;
-}
-
-.file-info {
-  flex-grow: 1;
-}
-
-.file-name {
-  font-weight: bold;
-  color: #fff;
-}
-
-.file-status {
-  margin-top: 5px;
-  color: #ccc;
-}
-
-.file-progress-bar {
-  height: 5px;
-  background-color: #555;
-  margin-top: 5px;
-  width: 0;
-  border-radius: 5px;
-}
-
-#buttonsContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-button {
+#upload-button {
   padding: 10px 20px;
-  margin: 0 10px;
-  background-color: #222;
-  color: #fff;
+  font-size: 18px;
+  background-color: #4CAF50;
+  color: white;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #333;
+#upload-status {
+  margin-top: 20px;
+  font-size: 16px;
 }
-
-.fade-out {
-  animation: fadeOut 1s forwards;
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/* Mobile styles */
-@media screen and (max-width: 600px) {
-  #gameContainer {
-    padding: 10px;
-  }
-
-  #buttonsContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  button {
-    margin: 10px 0;
-  }
-}
-
