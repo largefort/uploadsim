@@ -1,118 +1,153 @@
-// Global variables
+// Constants
+const NETWORK_SPEED_UPGRADE_COST = 100;
+const CREDIT_VALUE_UPGRADE_COST = 50;
+
+// Variables
 let networkSpeed = 0;
 let creditValue = 1;
 let totalCredits = 0;
+let fileCount = 0;
 
-// DOM elements
-const uploadButton = document.getElementById('uploadButton');
+// DOM Elements
+const networkSpeedElement = document.getElementById('networkSpeed');
+const creditValueElement = document.getElementById('creditValue');
+const totalCreditsElement = document.getElementById('totalCredits');
+const fileUploadListElement = document.getElementById('fileUploadList');
+const uploadFileButton = document.getElementById('uploadFileButton');
+const upgradeNetworkSpeedButton = document.getElementById('upgradeNetworkSpeedButton');
+const upgradeCreditValueButton = document.getElementById('upgradeCreditValueButton');
 const saveButton = document.getElementById('saveButton');
 const loadButton = document.getElementById('loadButton');
-const upgradeButton = document.getElementById('upgradeButton');
-const creditsUpgradeButton = document.getElementById('creditsUpgradeButton');
-const networkSpeedStat = document.getElementById('networkSpeedStat');
-const creditValueStat = document.getElementById('creditValueStat');
-const totalCreditsStat = document.getElementById('totalCreditsStat');
-const fileList = document.getElementById('fileList');
 
-// Function to generate a random file name
-function generateRandomFileName() {
-  const fileNames = ['document', 'image', 'video', 'audio', 'data', 'code'];
-  const fileExtensions = ['.txt', '.jpg', '.mp4', '.mp3', '.csv', '.js'];
-  const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
-  const randomExtension = fileExtensions[Math.floor(Math.random() * fileExtensions.length)];
-  return randomName + randomExtension;
+// Update network speed element
+function updateNetworkSpeed() {
+  networkSpeedElement.textContent = `${networkSpeed} KB/s`;
 }
 
-// Function to generate an AI file
-function generateAIFile() {
-  const fileName = generateRandomFileName();
-  const fileSize = Math.floor(Math.random() * 100) + 1; // Random file size between 1 and 100 KB
-  return { name: fileName, size: fileSize };
+// Update credit value element
+function updateCreditValue() {
+  creditValueElement.textContent = creditValue;
 }
 
-// Function to update the network speed and credit value stats
-function updateStats() {
-  networkSpeedStat.textContent = `${networkSpeed} kb/s`;
-  creditValueStat.textContent = creditValue;
-  totalCreditsStat.textContent = totalCredits;
+// Update total credits element
+function updateTotalCredits() {
+  totalCreditsElement.textContent = totalCredits;
 }
 
-// Function to simulate file uploading
+// Create a new file element
+function createFileElement(fileName, fileSize) {
+  const fileElement = document.createElement('li');
+  fileElement.classList.add('file');
+
+  const fileIconElement = document.createElement('div');
+  fileIconElement.classList.add('file-icon');
+  fileElement.appendChild(fileIconElement);
+
+  const fileInfoElement = document.createElement('div');
+  fileInfoElement.classList.add('file-info');
+  fileElement.appendChild(fileInfoElement);
+
+  const fileNameElement = document.createElement('div');
+  fileNameElement.classList.add('file-name');
+  fileNameElement.textContent = fileName;
+  fileInfoElement.appendChild(fileNameElement);
+
+  const fileStatusElement = document.createElement('div');
+  fileStatusElement.classList.add('file-status');
+  fileStatusElement.textContent = 'Uploading';
+  fileInfoElement.appendChild(fileStatusElement);
+
+  const fileProgressBarElement = document.createElement('div');
+  fileProgressBarElement.classList.add('file-progress-bar');
+  fileInfoElement.appendChild(fileProgressBarElement);
+
+  fileUploadListElement.appendChild(fileElement);
+
+  // Animate the progress bar
+  setTimeout(() => {
+    fileProgressBarElement.classList.add('fade-out');
+  }, 5000);
+
+  // Remove the file element after the animation
+  setTimeout(() => {
+    fileElement.remove();
+  }, 6000);
+}
+
+// Upload a new file
 function uploadFile() {
-  const file = generateAIFile();
+  const fileName = `file_${fileCount}`;
+  const fileSize = Math.floor(Math.random() * 1000) + 1; // Random file size between 1 and 1000
+  const fileCredits = fileSize * creditValue;
 
-  const fileItem = document.createElement('li');
-  fileItem.classList.add('file');
+  totalCredits += fileCredits;
+  updateTotalCredits();
 
-  const fileIcon = document.createElement('span');
-  fileIcon.classList.add('file-icon');
-  fileIcon.innerHTML = '<i class="fa fa-file"></i>';
+  createFileElement(fileName, fileSize);
 
-  const fileInfo = document.createElement('div');
-  fileInfo.classList.add('file-info');
-
-  const fileName = document.createElement('span');
-  fileName.classList.add('file-name');
-  fileName.textContent = file.name;
-
-  const fileExtension = document.createElement('span');
-  fileExtension.classList.add('file-extension');
-  fileExtension.textContent = `Size: ${file.size} KB`;
-
-  fileInfo.appendChild(fileName);
-  fileInfo.appendChild(fileExtension);
-
-  fileItem.appendChild(fileIcon);
-  fileItem.appendChild(fileInfo);
-
-  fileList.appendChild(fileItem);
-
-  // Scroll to the bottom of the file list
-  fileList.scrollTop = fileList.scrollHeight;
-
-  // Update total credits based on file size and credit value
-  const creditsEarned = file.size * creditValue;
-  totalCredits += creditsEarned;
-
-  updateStats();
+  fileCount++;
 }
 
-// Event listener for upload button click
-uploadButton.addEventListener('click', () => {
-  uploadFile();
-});
+// Upgrade network speed
+function upgradeNetworkSpeed() {
+  const upgradeCost = NETWORK_SPEED_UPGRADE_COST * (networkSpeed + 1);
+  if (totalCredits >= upgradeCost) {
+    totalCredits -= upgradeCost;
+    networkSpeed++;
+    updateNetworkSpeed();
+    updateTotalCredits();
+  }
+}
 
-// Event listener for save button click
-saveButton.addEventListener('click', () => {
-  alert('Saving game...');
-});
+// Upgrade credit value
+function upgradeCreditValue() {
+  const upgradeCost = CREDIT_VALUE_UPGRADE_COST * creditValue;
+  if (totalCredits >= upgradeCost) {
+    totalCredits -= upgradeCost;
+    creditValue++;
+    updateCreditValue();
+    updateTotalCredits();
+  }
+}
 
-// Event listener for load button click
-loadButton.addEventListener('click', () => {
-  alert('Loading game...');
-});
+// Save game progress
+function saveGame() {
+  const gameData = {
+    networkSpeed,
+    creditValue,
+    totalCredits,
+    fileCount,
+  };
+  localStorage.setItem('uploadSimulatorGameData', JSON.stringify(gameData));
+  alert('Game saved!');
+}
 
-// Event listener for network speed upgrade button click
-upgradeButton.addEventListener('click', () => {
-  networkSpeed += 1;
-  updateStats();
-});
+// Load game progress
+function loadGame() {
+  const savedGameData = localStorage.getItem('uploadSimulatorGameData');
+  if (savedGameData) {
+    const gameData = JSON.parse(savedGameData);
+    networkSpeed = gameData.networkSpeed;
+    creditValue = gameData.creditValue;
+    totalCredits = gameData.totalCredits;
+    fileCount = gameData.fileCount;
+    updateNetworkSpeed();
+    updateCreditValue();
+    updateTotalCredits();
+    alert('Game loaded!');
+  } else {
+    alert('No saved game found!');
+  }
+}
 
-// Event listener for credit value upgrade button click
-creditsUpgradeButton.addEventListener('click', () => {
-  creditValue += 1;
-  updateStats();
-});
+// Event listeners
+uploadFileButton.addEventListener('click', uploadFile);
+upgradeNetworkSpeedButton.addEventListener('click', upgradeNetworkSpeed);
+upgradeCreditValueButton.addEventListener('click', upgradeCreditValue);
+saveButton.addEventListener('click', saveGame);
+loadButton.addEventListener('click', loadGame);
 
 // Initialize game
-function initializeGame() {
-  updateStats();
-  uploadFile();
-}
-
-// Delay the display of the game content for 3 seconds
-setTimeout(() => {
-  document.getElementById('loadingScreen').style.display = 'none';
-  document.getElementById('gameContainer').style.display = 'block';
-  initializeGame();
-}, 3000);
+updateNetworkSpeed();
+updateCreditValue();
+updateTotalCredits();
