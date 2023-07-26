@@ -4,12 +4,19 @@ const diskUsageSpan = document.getElementById('diskUsage');
 const storageCapacitySpan = document.getElementById('storageCapacity');
 const prestigePointsSpan = document.getElementById('prestigePoints');
 const storageUpgradeCostSpan = document.getElementById('storageUpgradeCost');
+const fileInput = document.getElementById('fileInput');
+
+const uploadButton = document.getElementById('uploadButton');
+const autoUploadToggle = document.getElementById('autoUploadToggle');
+const shopContainer = document.querySelector('.shop');
+
 let points = 0;
 let uploadSpeed = 1000; // Milliseconds between each upload
-let maxStorageCapacity = 8; // Maximum storage capacity
+let maxStorageCapacity = 5; // Maximum storage capacity
+let maxFileSize = 10 * 1024 * 1024; // Maximum file size: 10 MB
 let diskUsage = 0; // Number of files uploaded
 let prestigePoints = 0; // Prestige points earned
-let storageUpgradeCost = 10; // Cost in points for the storage upgrade
+let storageUpgradeCost = 200; // Cost in points for the storage upgrade
 let autoUploadEnabled = false; // Flag to indicate if auto-upload is enabled
 let uploadInterval; // Reference to the interval for the upload bot
 
@@ -25,8 +32,13 @@ const fileIcons = [
 const fileSizeUnits = ['B', 'KB', 'MB', 'GB', 'TB'];
 const uploadSpeedUpgradeCost = 100; // Cost in points for the upload speed upgrade
 
-document.getElementById('uploadButton').addEventListener('click', uploadFile);
-document.getElementById('autoUploadToggle').addEventListener('change', toggleAutoUpload);
+uploadButton.addEventListener('click', () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener('change', handleFileUpload);
+
+autoUploadToggle.addEventListener('change', toggleAutoUpload);
 
 storageCapacitySpan.textContent = maxStorageCapacity;
 pointsSpan.textContent = points;
