@@ -16,9 +16,6 @@
         <div class="points">Points: <span id="points">0</span></div>
         <div class="disk-usage">Disk Usage: <span id="diskUsage">0</span> / <span id="storageCapacity">5</span></div>
         <div class="prestige">Prestige Points: <span id="prestigePoints">0</span></div>
-        <button id="uploadButton">Upload File</button>
-        <label for="autoUploadToggle">Auto-Upload</label>
-        <input type="checkbox" id="autoUploadToggle">
         <div class="shop">
             <h2>In-Game Shop</h2>
             <ul>
@@ -26,7 +23,10 @@
                     <span>Upload Speed Upgrade</span>
                     <button class="buy-button" onclick="buyUploadSpeedUpgrade()">Buy (Cost: 100 points)</button>
                 </li>
-                <!-- Add more items here -->
+                <li>
+                    <span>Storage Upgrade</span>
+                    <button class="buy-button" onclick="buyStorageUpgrade()">Buy (Cost: <span id="storageUpgradeCost">200</span> points)</button>
+                </li>
             </ul>
         </div>
     </div>
