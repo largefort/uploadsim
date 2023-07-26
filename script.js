@@ -58,7 +58,7 @@ function uploadFile() {
   uploadSound.play();
 
   // Show bonus animation if a rare file is uploaded (you can customize this condition based on your game mechanics)
-  if (points % 50 === 0) {
+  if (points % 100 === 0) {
     showBonusAnimation();
   }
 
