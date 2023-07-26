@@ -2,12 +2,14 @@ const uploadArea = document.querySelector('.upload-area');
 const pointsSpan = document.getElementById('points');
 const diskUsageSpan = document.getElementById('diskUsage');
 const storageCapacitySpan = document.getElementById('storageCapacity');
-const prestigePointsSpan = document.getElementById('prestigePoints'); // Reference to the prestige points display
+const prestigePointsSpan = document.getElementById('prestigePoints');
+const storageUpgradeCostSpan = document.getElementById('storageUpgradeCost');
 let points = 0;
 let uploadSpeed = 1000; // Milliseconds between each upload
 let maxStorageCapacity = 5; // Maximum storage capacity
 let diskUsage = 0; // Number of files uploaded
 let prestigePoints = 0; // Prestige points earned
+let storageUpgradeCost = 200; // Cost in points for the storage upgrade
 let autoUploadEnabled = false; // Flag to indicate if auto-upload is enabled
 let uploadInterval; // Reference to the interval for the upload bot
 
@@ -29,6 +31,7 @@ document.getElementById('autoUploadToggle').addEventListener('change', toggleAut
 storageCapacitySpan.textContent = maxStorageCapacity;
 pointsSpan.textContent = points;
 prestigePointsSpan.textContent = prestigePoints;
+storageUpgradeCostSpan.textContent = storageUpgradeCost;
 
 // Load saved data if available
 loadSavedData();
@@ -126,6 +129,20 @@ function buyUploadSpeedUpgrade() {
   }
 }
 
+function buyStorageUpgrade() {
+  if (points >= storageUpgradeCost) {
+    points -= storageUpgradeCost;
+    maxStorageCapacity += 5; // Increase maximum storage capacity by 5 (you can adjust the value as needed)
+    storageUpgradeCost += 100; // Increase the cost for the next storage upgrade (you can adjust the value as needed)
+    pointsSpan.textContent = points;
+    storageCapacitySpan.textContent = maxStorageCapacity;
+    storageUpgradeCostSpan.textContent = storageUpgradeCost;
+    showNotification(`Storage Capacity Upgraded! Your new capacity is ${maxStorageCapacity}.`);
+  } else {
+    showNotification('Not enough points to buy the upgrade.');
+  }
+}
+
 function showNotification(message) {
   const notificationContainer = document.querySelector('.notification-container');
   const notification = document.createElement('div');
@@ -166,27 +183,4 @@ function saveGameData() {
   localStorage.setItem('points', points);
   localStorage.setItem('diskUsage', diskUsage);
   localStorage.setItem('prestigePoints', prestigePoints);
-}
-
-function showPrestigeConfirmation() {
-  const confirmPrestige = confirm('You reached the maximum points! Do you want to prestige and start over?');
-
-  if (confirmPrestige) {
-    prestige();
-  }
-}
-
-function prestige() {
-  prestigePoints += points;
-  points = 0;
-  diskUsage = 0;
-  pointsSpan.textContent = points;
-  diskUsageSpan.textContent = diskUsage;
-  prestigePointsSpan.textContent = prestigePoints;
-  clearInterval(uploadInterval); // Stop auto-upload when prestiging
-
-  // Additional actions to reset or change game mechanics after prestiging
-  // For example, reset the upload speed or add new upgrades
-
-  alert(`Congratulations! You prestiged and earned ${prestigePoints} Prestige Points.`);
 }
