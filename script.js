@@ -6,10 +6,10 @@ const prestigePointsSpan = document.getElementById('prestigePoints');
 const storageUpgradeCostSpan = document.getElementById('storageUpgradeCost');
 let points = 0;
 let uploadSpeed = 1000; // Milliseconds between each upload
-let maxStorageCapacity = 5; // Maximum storage capacity
+let maxStorageCapacity = 8; // Maximum storage capacity
 let diskUsage = 0; // Number of files uploaded
 let prestigePoints = 0; // Prestige points earned
-let storageUpgradeCost = 200; // Cost in points for the storage upgrade
+let storageUpgradeCost = 10; // Cost in points for the storage upgrade
 let autoUploadEnabled = false; // Flag to indicate if auto-upload is enabled
 let uploadInterval; // Reference to the interval for the upload bot
 
