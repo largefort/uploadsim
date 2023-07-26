@@ -5,7 +5,6 @@ const storageCapacitySpan = document.getElementById('storageCapacity');
 const prestigePointsSpan = document.getElementById('prestigePoints');
 const storageUpgradeCostSpan = document.getElementById('storageUpgradeCost');
 const fileInput = document.getElementById('fileInput');
-
 const uploadButton = document.getElementById('uploadButton');
 const autoUploadToggle = document.getElementById('autoUploadToggle');
 const shopContainer = document.querySelector('.shop');
