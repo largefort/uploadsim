@@ -37,6 +37,11 @@ body {
     margin-top: 10px;
 }
 
+.prestige {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
 #uploadButton {
     margin-top: 20px;
     padding: 10px 20px;
@@ -85,4 +90,58 @@ label {
     100% {
         opacity: 0;
     }
+}
+
+/* In-Game Shop */
+.shop {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.shop h2 {
+    margin-bottom: 10px;
+}
+
+.shop ul {
+    list-style: none;
+    padding: 0;
+}
+
+.shop li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.buy-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.buy-button:hover {
+    background-color: #0056b3;
+}
+
+/* Notifications */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.notification {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
 }
