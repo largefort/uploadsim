@@ -1,39 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idle Upload Simulator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-jf2BNPyuvR54WJn4t+2ZLTT7Czq/2bPpXMrma6pWdM00F5CgAWQJWZ0zBt5pOy/ncOx4Y5EoABJy3Gel6iFnQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Idle Upload Simulator</h1>
-        <div class="upload-area">
-            <!-- Placeholder for uploaded files -->
-        </div>
-        <div class="points">Points: <span id="points">0</span></div>
-        <div class="disk-usage">Disk Usage: <span id="diskUsage">0</span> / <span id="storageCapacity">5</span></div>
-        <div class="prestige">Prestige Points: <span id="prestigePoints">0</span></div>
-        <div class="shop">
-            <h2>In-Game Shop</h2>
-            <ul>
-                <li>
-                    <span>Upload Speed Upgrade</span>
-                    <button class="buy-button" onclick="buyUploadSpeedUpgrade()">Buy (Cost: 100 points)</button>
-                </li>
-                <li>
-                    <span>Storage Upgrade</span>
-                    <button class="buy-button" onclick="buyStorageUpgrade()">Buy (Cost: <span id="storageUpgradeCost">200</span> points)</button>
-                </li>
-            </ul>
-        </div>
-        <button id="uploadButton">Upload File</button>
-        <label for="autoUploadToggle">Auto-Upload</label>
-        <input type="checkbox" id="autoUploadToggle">
-    </div>
-    <div class="notification-container"></div>
-    <script src="script.js"></script>
+    <input type="text" id="fileName" placeholder="Enter file name">
+    <button onclick="addFile()">Add File</button>
+    <div id="uploadQueue"></div>
 </body>
+<script src="script.js"></script>
 </html>
